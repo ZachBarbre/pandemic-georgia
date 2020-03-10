@@ -179,7 +179,7 @@ a {
 
 @media only screen and (max-width: 769px) {
   .gameBoard {
-    background-image: url("img/image.png");
+    background-image: url("../img/image.png");
     background-size: contain;
     /* background-color: lightcoral; */
     background-repeat: no-repeat;
