@@ -1,4 +1,4 @@
-create database pandemic;
+CREATE DATABASE pandemic;
 
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
@@ -11,7 +11,16 @@ CREATE TABLE teams (
 
 CREATE TABLE game (
     id integer REFERENCES teams(id),
-    "C1infect" integer,
+    "DaltonInfect" integer,
+    "BlairsvilleInfect" integer,
+    "AtlantaInfect" integer,
+    "AthensInfect" integer,
+    "AugustaInfect" integer,
+    "ColumbusInfect" integer,
+    "MaconInfect" integer,
+    "SavannahInfect" integer,
+    "AlbanyInfect" integer,
+    "ValdostaInfect" integer,
     "player1Hand" integer [],
     "player2Hand" integer [],
     "player3Hand" integer [],
