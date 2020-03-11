@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${title}</title>
+    <link rel="stylesheet" href="stylesheets/mystyles.css" />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+    <link rel="stylesheet" href="stylesheets/style.css" />
+  </head>
+  <body>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item subtitle is-3 title-font" href="/">
+          Pandemic
+        </a>
+        <a class="navbar-item subtitle title-font" href="/">
+          Georgia
+        </a>
+        <a
+          role="button"
+          class="navbar-burger burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="login-signup-logout"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="login-signup-logout" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <!-- Add in terneray for logged in -->
+              <a class="button is-link" href="/users/logout"> Log out </a>
+              <a class="button is-primary" href="/users/signup">
+                <strong>Sign up</strong>
+              </a>
+              <a class="button is-link" href="/users/login"> Log in </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="section">
+      ${partial}
+    </section>
+  </body>
+  <script src="javascripts/burgerControl.js"></script>
+</html>
