@@ -11,30 +11,30 @@ CREATE TABLE teams (
 
 CREATE TABLE game (
     id integer REFERENCES teams(id),
-    "DaltonInfect" integer,
-    "BlairsvilleInfect" integer,
-    "AtlantaInfect" integer,
-    "AthensInfect" integer,
-    "AugustaInfect" integer,
-    "ColumbusInfect" integer,
-    "MaconInfect" integer,
-    "SavannahInfect" integer,
-    "AlbanyInfect" integer,
-    "ValdostaInfect" integer,
-    "player1Hand" integer [],
-    "player2Hand" integer [],
-    "player3Hand" integer [],
-    "player4Hand" integer [],
-    "Cure1" boolean,
-    "Cure2" boolean,
-    "Cure3" boolean,
-    "Cure4" boolean,
-    "PlayerDeck" integer[],
-    "infectDeck" integer[],
-    "player1City" integer,
-    "player2City" integer,
-    "player3City" integer,
-    "player4City" integer
+    "daltoninfect" integer,
+    "blairsvilleinfect" integer,
+    "atlantainfect" integer,
+    "athensinfect" integer,
+    "augustainfect" integer,
+    "columbusinfect" integer,
+    "maconinfect" integer,
+    "savannahinfect" integer,
+    "albanyinfect" integer,
+    "valdostainfect" integer,
+    "player1hand" integer [],
+    "player2hand" integer [],
+    "player3hand" integer [],
+    "player4hand" integer [],
+    "cure1" boolean,
+    "cure2" boolean,
+    "cure3" boolean,
+    "cure4" boolean,
+    "playerdeck" integer[],
+    "infectdeck" integer[],
+    "player1city" integer,
+    "player2city" integer,
+    "player3city" integer,
+    "player4city" integer
 );
 
 
@@ -42,3 +42,4 @@ CREATE TABLE Score (
     id integer References teams(id),
     winLost integer 
 );
+
