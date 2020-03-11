@@ -1,0 +1,396 @@
+html {
+  font-size: 1vw;
+  color: white;
+  font-family: "capture_itregular";
+}
+
+@font-face {
+  font-family: "capture_itregular";
+  src: url("Capture_it-webfont.eot");
+  src: url("Capture_it-webfont.eot?#iefix") format("embedded-opentype"),
+    url("Capture_it-webfont.woff2") format("woff2"),
+    url("Capture_it-webfont.woff") format("woff"),
+    url("Capture_it-webfont.ttf") format("truetype"),
+    url("Capture_it-webfont.svg#capture_itregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+button {
+  height: 3.7vh;
+  width: 2.5vw;
+  background-color: yellow;
+  border-radius: 50%;
+}
+
+.trackerContainerMobile {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  border: none;
+}
+
+.wholeBoard {
+  width: 80vw;
+  height: 80vh;
+  display: flex;
+  margin: 6vh auto;
+  max-width: 1300px;
+}
+
+.gameInfo {
+  color: black;
+  width: 50%;
+  height: 100%;
+  border: 2px solid black;
+}
+
+.infectInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 33%;
+}
+
+.infectDraw {
+  text-align: center;
+  height: 100%;
+  width: 50%;
+}
+
+.epidemic {
+  border-left: 2px solid black;
+  text-align: center;
+  height: 100%;
+  width: 50%;
+}
+
+.trackerContainer {
+  display: flex;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 33%;
+}
+
+.outbreak {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.infectionRate {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.outbreakCounter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 2px solid black;
+  width: 2vw;
+  height: 2vw;
+  color: black;
+  background-color: lime;
+  border-radius: 50%;
+}
+
+.infectionCounter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 2px solid black;
+  width: 2vw;
+  height: 2vw;
+  color: white;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.playerHand {
+  text-align: center;
+  width: 100%;
+  height: 34%;
+}
+
+.gameBoard {
+  background-image: url("../img/image.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  max-width: 50%;
+  min-width: 50%;
+  height: 100%;
+
+}
+
+button:hover {
+  background-color: rgba(240, 128, 128, 0.4);
+  transition: 0.3s;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.north {
+  text-align: center;
+  width: 100%;
+  height: 33%;
+  display: flex;
+  margin: auto;
+}
+
+.n1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 5vh 0;
+  width: 25%;
+  height: 100%;
+}
+
+.n2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 5vh 0;
+  width: 25%;
+  height: 100%;
+}
+
+.macon {
+  align-self: flex-end;
+  padding-left: 4vw;
+  padding-bottom: 12vh;
+}
+
+.columbus {
+  padding-left: 3vw;
+}
+
+a {
+  text-decoration: none;
+  color: salmon;
+}
+
+.n3 {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 25%;
+  height: 100%;
+}
+
+.n4 {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 25%;
+  height: 100%;
+}
+
+.m1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 25%;
+  height: 100%;
+}
+
+.m2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  width: 33%;
+  height: 100%;
+}
+
+.m3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 25%;
+  height: 100%;
+}
+
+.m4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 25%;
+  height: 100%;
+  visibility: hidden;
+}
+
+.s1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 15vh;
+  width: 25%;
+  height: 100%;
+}
+
+.s2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  justify-content: center;
+  width: 25%;
+  height: 100%;
+}
+
+.s3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 5vh;
+  width: 25%;
+  height: 100%;
+}
+
+.s4 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 25%;
+  height: 100%;
+}
+
+.middle {
+  text-align: center;
+  display: flex;
+  width: 100%;
+  height: 33%;
+}
+
+.south {
+  text-align: center;
+  display: flex;
+  width: 100%;
+  height: 33%;
+}
+
+@media only screen and (max-width: 769px) {
+
+  html {
+    font-size: 2vw;
+  }
+
+  button {
+    height: 3vh;
+    width: 4vw;
+  }
+
+  .wholeBoard {
+    width: 90vw;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    margin: 6vh auto 9vh auto;
+    max-width: 1300px;
+  }
+
+  .infectInfo {
+    height: 50%;
+  }
+
+  .playerHand {
+    border-top: 2px solid black;
+    height: 50%;
+  }
+
+  .trackerContainer {
+    visibility: hidden;
+    height: 0;
+    width: 0;
+  }
+
+  .trackerContainerMobile {
+    display: flex;
+    visibility: visible;
+    flex-direction: row;
+    height: 2vh;
+    color: white;
+    margin: 0vh auto 6vh auto;
+    width: 100%;
+  }
+
+  .gameBoard {
+    background-image: url("../img/image.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    min-width: 100%;
+    height: 80%;
+    margin: auto;
+  }
+
+  .gameInfo {
+    width: 100%;
+    height: 75%;
+  }
+
+  .outbreakCounter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid black;
+    width: 5vw;
+    height: 5vw;
+    color: black;
+    border-radius: 50%;
+  }
+
+
+  .infectionCounter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid black;
+    width: 5vw;
+    height: 5vw;
+    color: white;
+    background-color: black;
+    border-radius: 50%;
+  }
+
+
+  .macon {
+    align-self: flex-end;
+    padding-left: 4vw;
+  }
+
+}
