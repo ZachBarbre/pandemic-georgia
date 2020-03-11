@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("./.env");
+require(".env");
 
 const pgp = require("pg-promise")({
   query: function(e) {
