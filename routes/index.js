@@ -8,7 +8,7 @@ router.get("/", async function(req, res, next) {
       userData: req.session
     },
     partials: {
-      partial: "game-partial"
+      partial: "index-partial"
     }
   });
 });

@@ -3,7 +3,7 @@ CREATE DATABASE pandemic;
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     name varchar,
-    "Password" text,
+    password text,
     win integer,
     loss integer,
     email varchar
