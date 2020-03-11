@@ -4,11 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${title}</title>
-    <!-- <link rel="stylesheet" href="stylesheets/bulma.css" /> -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
-    />
+    <link rel="stylesheet" href="stylesheets/mystyles.css" />
     <script
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
@@ -16,17 +12,31 @@
     <link rel="stylesheet" href="stylesheets/style.css" />
   </head>
   <body>
-    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item title is-2 title-font" href="/">
-          Pandemic Georgia
+        <a class="navbar-item subtitle is-3 title-font" href="/">
+          Pandemic
+        </a>
+        <a class="navbar-item subtitle title-font" href="/">
+          Georgia
+        </a>
+        <a
+          role="button"
+          class="navbar-burger burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="login-signup-logout"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </a>
       </div>
-      <div class="navbar-menu"></div>
-      <div class="navbar-menu">
+      <div id="login-signup-logout" class="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
+              <!-- Add in terneray for logged in -->
               <a class="button is-link" href="/users/logout"> Log out </a>
               <a class="button is-primary" href="/users/signup">
                 <strong>Sign up</strong>
@@ -42,4 +52,5 @@
       ${partial}
     </section>
   </body>
+  <script src="javascripts/burgerControl.js"></script>
 </html>

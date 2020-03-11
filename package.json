@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss stylesheets/bulma.css"
+    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss public/stylesheets/mystyles.css"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
