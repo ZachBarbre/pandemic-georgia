@@ -36,21 +36,23 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <!-- Add in terneray for logged in -->
-              <a class="button is-link" href="/users/logout"> Log out </a>
-              <a class="button is-primary" href="/users/signup">
+              ${userData.is_logged_in ? `
+              <a class="button is-link" href="/login/logout"> Log out </a>
+              ` : `
+              <a class="button is-primary" href="/login/signup">
                 <strong>Sign up</strong>
               </a>
-              <a class="button is-link" href="/users/login"> Log in </a>
+              <a class="button is-link" href="/login"> Log in </a>
+              `}
             </div>
           </div>
         </div>
       </div>
     </nav>
 
-    <section class="section">
+    <main>
       ${partial}
-    </section>
+    </main>
   </body>
   <script src="javascripts/burgerControl.js"></script>
 </html>

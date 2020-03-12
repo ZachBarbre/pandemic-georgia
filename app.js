@@ -7,6 +7,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
 const gameRouter = require("./routes/game");
 
@@ -31,7 +32,8 @@ app.use(
   })
 );
 
-app.use("/", loginRouter);
+app.use("/", indexRouter);
+app.use("/login", loginRouter);
 app.use("/game", gameRouter);
 
 module.exports = app;
