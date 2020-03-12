@@ -8,13 +8,13 @@ class City {
     this.connectedCities = connectedCities;
   }
 
-  async postInfect(city) {
+  async postInfect(city, teamID) {
     //updates database with new infected total.
     try {
       const value = await this.getInfect(city);
       const bit = value[Object.keys(value)[0]] + 1;
       const post = await db.one(
-        `UPDATE game SET ${city.name}infect = $1 FROM teams WHERE game.id = teams.id;`,
+        `UPDATE game SET ${city.name}infect = $1 FROM teams WHERE game.id = ${teamID};`,
         [bit]
       );
       console.log("The response is", response);
@@ -24,10 +24,12 @@ class City {
     }
   }
 
-  async getInfect(city) {
+  async getInfect(city, teamID) {
     // getter from database for infected total.
     try {
-      const response = await db.one(`SELECT game.${city.name}Infect FROM game`);
+      const response = await db.one(
+        `SELECT game.${city.name}Infect FROM game WHERE game.id = ${teamID};`
+      );
       console.log("THe response is", response);
       return response;
     } catch (e) {
@@ -35,10 +37,10 @@ class City {
     }
   }
 
-  static async updateGameIdwTeamID() {
+  static async updateGameIdwTeamID(teamId) {
     try {
       const response = await db.one(
-        `UPDATE game SET id = teams.id FROM teams;`
+        `UPDATE game SET id = ${teamId} FROM teams WHERE teams.id = ${teamId};`
       );
       console.log(response);
       return response;
