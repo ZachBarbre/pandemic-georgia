@@ -15,17 +15,16 @@ class Player {
         newLocation = potentialDestination;
         i = 15;
         this.location = newLocation;
-        return this.location;
+        return this.location; //possibly needs to just return true for a check. Posting city achieves this result
       }
     }
-
     console.log("Sorry, you couldn't move there!");
   }
 
-  async postPlayerCity(player, destination) {
+  async updatePlayerCity(player, destination, teamID) {
     try {
       const response = await db.one(
-        `UPDATE game SET ${player.name}city = ${destination.id} FROM teams WHERE game.id = teams.id;`
+        `UPDATE game SET ${player.name}city = ${destination.id} FROM teams WHERE game.id = ${teamID};`
       );
       return response;
     } catch (e) {
@@ -33,33 +32,36 @@ class Player {
     }
   }
 
-  async getPlayerCity(player) {
+  async getPlayerCity(player, teamID) {
     try {
-      const location = await db.one(`SELECT ${player.name}city FROM game;`);
+      const location = await db.one(
+        `SELECT ${player.name}city FROM game WHERE game.id = ${teamID};`
+      );
       console.log(location);
     } catch (e) {
       return e;
     }
   }
 
-  async postLocation() {
-    //connect to database.
+  async getPlayerHand(teamID) {
     try {
       const response = await db.one(
-        "INSERT INTO teams(name, password, win, loss, email) VALUES ($1, $2, $3, $4, $5) RETURNING id;",
-        ["benny", "brunhilda", 1, 4, "bebebfo"]
+        `SELECT playerdeck FROM game WHERE game.id = ${teamID};`
       );
-      return response;
+      console.log(response);
     } catch (e) {
       return e;
     }
   }
 
-  async getLocation() {
+  async getTeamID(sessionID) {
+    //this expects to recieve the Session id for the team to update the game database.
     try {
-      const response = await db.one(`SELECT * FROM teams`);
-      console.log("THe response is", response);
-      return response;
+      const response = await db.one(
+        `SELECT teams.id FROM teams WHERE teams.id = ${sessionID};`
+      );
+      console.log(response.id);
+      return response.id;
     } catch (e) {
       return e;
     }
