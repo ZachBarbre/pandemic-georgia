@@ -40,7 +40,7 @@ body {
 }
 
 
-button {
+.cityButton {
   height: 3.7vh;
   width: 2.5vw;
   background-color: yellow;
