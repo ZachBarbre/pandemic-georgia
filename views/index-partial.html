@@ -1,0 +1,16 @@
+<div class="section">
+  <div class="container">
+    <h1 class="subtitle is-1 title-font">PANDEMIC GEORGIA</h1>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    ${userData.is_logged_in ? `
+    <h2 class="subtitle is-2 title-font">Welcome, ${userData.teamname}</h2>
+    <h2 class="subtitle is-3 title-font"><a href="/game">Click</a> to Play</h2>
+    `:`
+    <h2 class="subtitle is-3 title-font"><a href="/login">Login</a> to Play</h2>
+    `}
+  </div>
+</div>

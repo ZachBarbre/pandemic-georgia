@@ -1,7 +1,18 @@
 <div class="section">
   <div class="container login">
-    <h3 class="subtitle is-3 title-font">Login To Play</h3>
-    <form action="/login" method="POST">
+    <h3 class="subtitle is-3 title-font">Signup To Play</h3>
+    <form action="/signup" method="POST">
+      <div class="field">
+        <label class="label">Team Name</label>
+        <div class="control">
+          <input
+            class="input"
+            name="teamname"
+            type="text"
+            placeholder="Enter your Team Name"
+          />
+        </div>
+      </div>
       <div class="field">
         <label class="label">Email</label>
         <div class="control">
@@ -9,7 +20,7 @@
             class="input"
             name="email"
             type="email"
-            placeholder="team@cdc.gov"
+            placeholder="i.e. - team@cdc.gov"
           />
         </div>
       </div>
@@ -20,7 +31,7 @@
         </div>
       </div>
       <div class="control">
-        <button class="button is-primary">Login</button>
+        <button class="button is-primary">Signup</button>
       </div>
     </form>
   </div>
