@@ -1,0 +1,32 @@
+${!!userData.is_logged_in ? `
+<section class="section title-font">
+  <div class="container login">
+    <h2 class="subtitle is-3 title-font">
+      Click here to <a href="/game/play">Continue</a>
+    </h2>
+    <h2 class="subtitle is-3 title-font">Or create a new game.</h2>
+    <form action="/game" method="POST">
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select name="players">
+              <option value="2">2 Players</option>
+              <option value="3">3 Players</option>
+              <option value="4">4 Players</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <button type="submit" class="button is-primary">Start Game!</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+` : `
+<div class="section container login">
+  <h2 class="subtitle is-3 title-font">
+    Please <a href="/login">Login</a> to play.
+  </h2>
+</div>
+` }
