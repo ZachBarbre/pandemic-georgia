@@ -43,18 +43,6 @@ class Player {
     }
   }
 
-  async getLocation(teamID) {
-    try {
-      const response = await db.one(
-        `SELECT * FROM teams WHERE game.id = ${teamID};`
-      );
-      console.log("The response is", response);
-      return response;
-    } catch (e) {
-      return e;
-    }
-  }
-
   async getPlayerHand(teamID) {
     try {
       const response = await db.one(
