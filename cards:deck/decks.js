@@ -21,3 +21,9 @@ startingShuffle(infectDeck);
 startingShuffle(playerDeck);
 console.log(playerDeck);
 console.log(infectDeck);
+UPDATE game SET playerdeck = `${playerDeck}`, infectdeck =`${infectDeck}` where id = 1;
+
+
+
+export infectDeck
+export playerDeck
