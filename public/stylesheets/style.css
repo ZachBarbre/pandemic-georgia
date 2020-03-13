@@ -47,6 +47,29 @@ body {
   border-radius: 50%;
 }
 
+.cityInfectedButton {
+  font-family: "capture_itregular";
+  color: white;
+  font-size: 2.5vh;
+  height: 3.7vh;
+  width: 2.5vw;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.neon {
+  color: #fff;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px #fff,
+    0 0 40px #0ff,
+    0 0 80px #0ff,
+    0 0 90px #0ff,
+    0 0 100px #0ff,
+    0 0 150px #0ff;
+}
+
 .trackerContainerMobile {
   visibility: hidden;
   height: 0;
@@ -92,6 +115,7 @@ button {
   text-align: center;
   height: 100%;
   width: 50%;
+  border-bottom: 1px solid black;
 }
 
 .epidemic {
@@ -99,25 +123,27 @@ button {
   text-align: center;
   height: 100%;
   width: 50%;
+  border-bottom: 2px solid black;
 }
 
 .trackerContainer {
   display: flex;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 1px solid black;
+  border-right: 2px solid black;
   flex-direction: column;
   align-items: center;
   color: black;
   justify-content: space-evenly;
-  width: 100%;
+  width: 50%;
   height: 33%;
 }
 
 .outbreak {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  /* border-bottom: 2px solid black; */
 }
 
 .infectionRate {
@@ -154,6 +180,7 @@ button {
 }
 
 .playerHand {
+  border-top: 2px solid black;
   text-align: center;
   width: 100%;
   height: 34%;
@@ -209,6 +236,52 @@ img {
   align-self: flex-end;
   padding-left: 4vw;
   padding-bottom: 12vh;
+}
+
+.playerBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.player1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: tomato;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
+}
+
+.player2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: black;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
+}
+
+.player3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: magenta;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
+}
+
+.player4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: purple;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
 }
 
 .columbus {
@@ -326,6 +399,21 @@ a {
 
   html {
     font-size: 2vw;
+  }
+
+  .infectDraw {
+    text-align: center;
+    height: 100%;
+    width: 50%;
+    border-bottom: none;
+  }
+
+  .epidemic {
+    border-left: 2px solid black;
+    text-align: center;
+    height: 100%;
+    width: 50%;
+    border-bottom: none;
   }
 
   button {
