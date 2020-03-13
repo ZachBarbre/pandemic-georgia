@@ -37,21 +37,9 @@ class City {
     }
   }
 
-  static async updateGameIdwTeamID(teamId) {
-    try {
-      const response = await db.one(
-        `UPDATE game SET id = ${teamId} FROM teams WHERE teams.id = ${teamId};`
-      );
-      console.log(response);
-      return response;
-    } catch (e) {
-      return e;
-    }
-  }
-
   static async initCity() {
     const response = await db.one(
-      `INSERT INTO game(daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1hand, player2hand, player3hand, player4hand, cure1, cure2, cure3, cure4, playerdeck, infectdeck, player1city, player2city, player3city, player4city, infectrate, playeractions) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26) RETURNING id`,
+      `INSERT INTO game(daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1hand, player2hand, player3hand, player4hand, cure1, cure2, cure3, cure4, playerdeck, infectdeck, player1city, player2city, player3city, player4city, infectrate, playeractions, outbreak) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING id`,
       [
         0,
         0,
@@ -78,7 +66,8 @@ class City {
         3,
         3,
         0,
-        4
+        4,
+        0
       ]
     );
   }
