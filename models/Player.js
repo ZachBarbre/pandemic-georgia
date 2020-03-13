@@ -26,9 +26,10 @@ class Player {
         newLocation = potentialDestination;
         i = 15;
         this.location = newLocation;
-        return this.location; //possibly needs to just return true for a check. Posting city achieves this result
+        return true; //possibly needs to just return true for a check. Posting city achieves this result
       }
     }
+    return false;
     console.log("Sorry, you couldn't move there!");
   }
 
@@ -43,11 +44,12 @@ class Player {
     }
   }
 
-  async getPlayerCity(player, teamID) {
+  static async getPlayerCity(playerNumber, teamID) {
     try {
       const location = await db.one(
-        `SELECT ${player.name}city FROM game WHERE game.id = ${teamID};`
+        `SELECT ${playerNumber}city FROM game WHERE game.id = ${teamID};`
       );
+      return location;
     } catch (e) {
       return e;
     }
