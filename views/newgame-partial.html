@@ -1,10 +1,13 @@
 ${!!userData.is_logged_in ? `
 <section class="section title-font">
   <div class="container login">
+    ${userData.game_exists ? `
     <h2 class="subtitle is-3 title-font">
       Click here to <a href="/game/play">Continue</a>
     </h2>
-    <h2 class="subtitle is-3 title-font">Or create a new game.</h2>
+    <h2 class="subtitle is-3 title-font">or</h2>
+    ` : ``}
+    <h2 class="subtitle is-3 title-font">Create a new game.</h2>
     <form action="/game" method="POST">
       <div class="field has-addons">
         <div class="control is-expanded">
