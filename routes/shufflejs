@@ -1,10 +1,4 @@
-let playerDeck = [];
-let infectDeck = [];
-
-for (playerDeck, i = 0; i < 24; ++i) playerDeck[i] = i;
-for (infectDeck, a = 0; a < 10; ++a) infectDeck[a] = a;
-
-function startingShuffle(array) {
+function Shuffle(array) {
   var tmp,
     current,
     top = array.length;
@@ -17,7 +11,14 @@ function startingShuffle(array) {
     }
   return array;
 }
-startingShuffle(infectDeck);
-startingShuffle(playerDeck);
+Shuffle(infectDeck);
+Shuffle(playerDeck);
 console.log(playerDeck);
 console.log(infectDeck);
+UPDATE game SET playerdeck = `${playerDeck}`, infectdeck =`${infectDeck}`
+ where id = `${req.session.user_id}`;
+
+
+const shuffle = Shuffle()
+
+modules.export = shuffle;
