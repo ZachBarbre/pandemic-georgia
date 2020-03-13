@@ -26,7 +26,6 @@ app.use(cookieParser());
 
 app.use(
   session({
-    store: new FileStore(),
     secret: "pandemic",
     resave: false,
     saveUninitialized: false,
