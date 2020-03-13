@@ -4,6 +4,27 @@ const cityModel = require("../models/Cities");
 const playerModel = require("../models/Player");
 const teamModel = require("../models/teamModel");
 
+const Dalton = new cityModel("dalton", 1, 0, ["Blairsville", "Atlanta"]);
+const Blairsville = new cityModel("Blairsville", 2, 0, ["Dalton", "Athens"]);
+const Atlanta = new cityModel("Atlanta", 3, 0, [
+  "Dalton",
+  "Athens",
+  "Macon",
+  "Columbus"
+]);
+const Athens = new cityModel("Athens", 4, 0, ["Blairsville", "Atlanta", "Augusta"]);
+const Augusta = new cityModel("Augusta", 5, 0, ["Athens", "Atlanta", "Savannah"]);
+const Columbus = new cityModel("Columbus", 6, 0, ["Atlanta", "Macon", "Albany"]);
+const Macon = new cityModel("Macon", 7, 0, [
+  "Atlanta",
+  "Columbus",
+  "Albany",
+  "Savannah"
+]);
+const Savannah = new cityModel("Savannah", 8, 0, ["Macon", "Valdosta"]);
+const Albany = new cityModel("Albany", 9, 0, ["Columbus", "Macon", "Valdosta"]);
+const Valdosta = new cityModel("Valdosta", 10, 0, ["Albany", "Savannah"]);
+
 
 //Helper Functions
 const createPlayerArray = playerNumber => {
@@ -26,9 +47,9 @@ router.get("/play", async (req, res, next) => {
 
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
 
-  console.log(cityStatus);
-  console.log(playerLocations);
-  console.log(req.session);
+  // console.log(cityStatus);
+  // console.log(playerLocations);
+  // console.log(req.session);
 
 
 
@@ -65,7 +86,9 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const { players } = req.body;
+  const {
+    players
+  } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
@@ -74,6 +97,17 @@ router.post("/", async (req, res) => {
   console.log("Created Game with id:", newGame);
 
   //need to initalized deck and player hands here
+
+  res.status(200).redirect("/game/play");
+})
+
+router.post("/play/atlanta", async (req, res) => {
+  const userData = req.session;
+  const gameState = await cityModel.getGame(req.session.user_id);
+  //create a conditonal to remove counter if turns > 0 && playerlocation is in the city && cityinfection > 0.
+  //if (gameState.atlantainfect > 0 && gameState.playercity === 3)
+  const cureATL = await Atlanta.removeInfect("atlanta", userData.user_id);
+
 
   res.status(200).redirect("/game/play");
 })
