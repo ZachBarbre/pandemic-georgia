@@ -1,39 +1,13 @@
 <section class="trackerContainerMobile">
     <div class="outbreak">
-      
-      <div class="outbreakCounter">
-        1
-      </div>
-      <div class="outbreakCounter">
-        2
-      </div>
-      <div class="outbreakCounter">
-        3
-      </div>
-      <div class="outbreakCounter">
-        4
-      </div>
-      <div class="outbreakCounter">
-        5
-      </div>
-      <div class="outbreakCounter">
-        6
-      </div>
-      <div class="outbreakCounter">
-        7
-      </div>
-      <div class="outbreakCounter">
-        8
-      </div>
+      ${cityStatus.outbreak > 0 ? `<div class="outbreakCounter">${cityStatus.outbreak}</div>`
+          : `<div class="outbreakCounter">0</div>`
+          }
     </div>
     <div class="infectionRate">
-      <div class="infectionCounter">X</div>
-      <div class="infectionCounter">X</div>
-      <div class="infectionCounter">X</div>
-      <div class="infectionCounter">X</div>
-      <div class="infectionCounter">X</div>
-      <div class="infectionCounter">X</div>
-      <div class="infectionCounter">X</div>
+      ${cityStatus.infectrate > 0 ? `<div class="infectionCounter">${cityStatus.infectrate}</div>`
+            : `<div class="infectionCounter">1</div>`
+          }
     </div>
   </section>
   </section>
@@ -44,21 +18,51 @@
           <form action="" method="POST">
             <input type="hidden" name="dalton" />
             <label>Dalton
+              ${cityStatus.daltoninfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.daltoninfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 1 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
-            <button class="cityButton" type="submit"></i></button>
           </form>
         </div>
         <div class="n2">
           <form action="" method="POST">
             <input type="hidden" name="gainesville" />
-            <label>Gainesville
-              <button class="cityButton" type="submit"></button>
+            <label>Blairsville
+              ${cityStatus.blairsvilleinfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.blairsvilleinfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                    return player === 2 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                    ` : ``;
+
+                }).join('')}
+              </div>
             </label>
           </form>
           <form action="" method="POST">
             <input type="hidden" name="athens" />
             <label>Athens
-              <button class="cityButton" type="submit"></button>
+              ${cityStatus.athensinfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.athensinfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 4 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
         </div>
@@ -70,7 +74,17 @@
           <form class="columbus" action="" method="POST">
             <input type="hidden" name="columbus" />
             <label>Columbus
-              <button class="cityButton" type="submit"></button>
+              ${cityStatus.columbusinfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.columbusinfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 6 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
         </div>
@@ -78,13 +92,33 @@
           <form action="" method="POST">
             <input type="hidden" name="atlanta" />
             <label>Atlanta
-              <button class="cityButton" type="submit"> </i></button>
+              ${cityStatus.atlantainfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.atlantainfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 3 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
           <form class="macon" action="" method="POST">
             <input type="hidden" name="macon" />
             <label>Macon
-              <button class="cityButton" type="submit"></button>
+              ${cityStatus.maconinfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.maconinfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 7 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
         </div>
@@ -92,7 +126,17 @@
           <form action="" method="POST">
             <input type="hidden" name="augusta" />
             <label>Augusta
-              <button class="cityButton" type="submit"></button>
+              ${cityStatus.augustainfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.augustainfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 5 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
         </div>
@@ -103,7 +147,17 @@
           <form action="" method="POST">
             <input type="hidden" name="albany" />
             <label>Albany
-              <button class="cityButton" type="submit"></button>
+              ${cityStatus.albanyinfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.albanyinfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 9 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
         </div>
@@ -112,7 +166,17 @@
           <form action="" method="POST">
             <input type="hidden" name="valdosta" />
             <label>Valdosta
-              <button class="cityButton" type="submit"></button>
+              ${cityStatus.valdostainfect === 0 ? `
+                <button class="cityButton" type="submit"></button>
+                ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.valdostainfect}</button>`
+              }
+              <div class="playerBox">
+                ${playerLocations.map((player, item) => {
+                  return player === 10 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                  ` : ``;
+
+              }).join('')}
+              </div>
             </label>
           </form>
         </div>
@@ -120,7 +184,17 @@
           <form action="" method="POST">
             <input type="hidden" name="savannah" />
           <label>Savannah
-            <button class="cityButton" type="submit"></button>
+            ${cityStatus.savannahinfect === 0 ? `
+              <button class="cityButton" type="submit"></button>
+              ` : `<button class="cityInfectedButton neon" type="submit">${cityStatus.savannahinfect}</button>`
+            }
+            <div class="playerBox">
+              ${playerLocations.map((player, item) => {
+                return player === 8 && player !== null ? `<div class="player${item + 1}">${item + 1}</div>
+                ` : ``;
+
+            }).join('')}
+            </div>
           </label>  
           </form>
         </div>
@@ -138,41 +212,15 @@
       <section class="trackerContainer">
         <p>Outbreaks</p>
         <div class="outbreak">
-          
-          <div class="outbreakCounter">
-            1
-          </div>
-          <div class="outbreakCounter">
-            2
-          </div>
-          <div class="outbreakCounter">
-            3
-          </div>
-          <div class="outbreakCounter">
-            4
-          </div>
-          <div class="outbreakCounter">
-            5
-          </div>
-          <div class="outbreakCounter">
-            6
-          </div>
-          <div class="outbreakCounter">
-            7
-          </div>
-          <div class="outbreakCounter">
-            8
-          </div>
+          ${cityStatus.outbreak > 0 ? `<div class="outbreakCounter">${cityStatus.outbreak}</div>`
+          : `<div class="outbreakCounter">0</div>`
+          }
         </div>
         <p>Infection Rate</p>
         <div class="infectionRate">
-          <div class="infectionCounter">X</div>
-          <div class="infectionCounter">X</div>
-          <div class="infectionCounter">X</div>
-          <div class="infectionCounter">X</div>
-          <div class="infectionCounter">X</div>
-          <div class="infectionCounter">X</div>
-          <div class="infectionCounter">X</div>
+          ${cityStatus.infectrate > 0 ? `<div class="infectionCounter">${cityStatus.infectrate}</div>`
+            : `<div class="infectionCounter">1</div>`
+          }
         </div>
       </section>
       <div class="playerHand">players hand</div>

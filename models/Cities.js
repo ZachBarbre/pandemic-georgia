@@ -24,11 +24,20 @@ class City {
     }
   }
 
-  async getInfect(city, teamID) {
+  static async getGame(teamID) {
+    try {
+      const response = await db.one(`SELECT * FROM game WHERE id = ${teamID};`);
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+  
+    async getInfect(city, teamID) {
     // getter from database for infected total.
     try {
       const response = await db.one(
-        `SELECT game.${city.name}Infect FROM game WHERE game.id = ${teamID};`
+        `SELECT game.${city}Infect FROM game WHERE game.id = ${teamID};`
       );
       console.log("THe response is", response);
       return response;
@@ -36,6 +45,7 @@ class City {
       return e;
     }
   }
+
 
   static async initCity(teamID, playerArray) {
     const response = await db.one(

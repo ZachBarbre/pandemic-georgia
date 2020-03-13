@@ -4,7 +4,7 @@ function Shuffle(array) {
     top = array.length;
   if (top)
     while (--top) {
-      current = Math.floor(Math.random() * (top + 1) + 1);
+      current = Math.floor(Math.random() * (top + 1));
       tmp = array[current];
       array[current] = array[top];
       array[top] = tmp;
@@ -15,10 +15,7 @@ Shuffle(infectDeck);
 Shuffle(playerDeck);
 console.log(playerDeck);
 console.log(infectDeck);
-UPDATE game SET playerdeck = `${playerDeck}`, infectdeck =`${infectDeck}`
- where id = `${req.session.user_id}`;
 
-
-const shuffle = Shuffle()
+const shuffle = Shuffle();
 
 modules.export = shuffle;

@@ -4,6 +4,7 @@ const cityModel = require("../models/Cities");
 const playerModel = require("../models/Player");
 const teamModel = require("../models/teamModel");
 
+
 //Helper Functions
 const createPlayerArray = playerNumber => {
   let playerArray = [];
@@ -17,14 +18,26 @@ const createPlayerArray = playerNumber => {
   return playerArray;
 };
 
-router.get("/play", async function(req, res, next) {
-  const teamData = req.session;
-  const playerLocations = await playerModel.getPlayerCount(teamData.user_id);
+
+
+router.get("/play", async (req, res, next) => {
+
+  const cityStatus = await cityModel.getGame(req.session.user_id);
+
+  const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
+
+  console.log(cityStatus);
+  console.log(playerLocations);
+  console.log(req.session);
+
+
 
   res.render("template", {
     locals: {
       title: "Pandemic Georgia",
-      userData: teamData
+      userData: req.session,
+      playerLocations: Object.values(playerLocations),
+      cityStatus: cityStatus
     },
     partials: {
       partial: "game-partial"
@@ -46,8 +59,9 @@ router.get("/", async (req, res) => {
     partials: {
       partial: "newgame-partial"
     }
-  });
-});
+
+  })
+})
 
 router.post("/", async (req, res) => {
   const userData = req.session;
@@ -62,6 +76,6 @@ router.post("/", async (req, res) => {
   //need to initalized deck and player hands here
 
   res.status(200).redirect("/game/play");
-});
+})
 
 module.exports = router;
