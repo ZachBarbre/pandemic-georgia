@@ -1,19 +1,20 @@
 // basic sql funciton to update the decks on the server
 const db = require("./con");
-const bcrypyt = require("bcryptjs");
+const db = require("./teams");
 
 class update {
     constructor (cardspots){
     this.cardspots = cardspots }
 function updateDs(){
-    UPDATE game SET playerdeck = playerDeck,discard = discard, infectdeck = infectDeck
-    WHERE id = user_id
+    `UPDATE game SET playerdeck = playerDeck,discard = discard, infectdeck = infectDeck
+     WHERE game.id = ${teamID};`
 } 
 
 
 //needs to be updated with how we are keeping track of player turn
 function updatehand(){
-    UPDATE game SET playerhand = player${}hand
-     WHERE id = user_id
+    `UPDATE game SET playerhand = player${}hand
+     WHERE game.id = ${teamID};`
+        
 }}
-module.exports = Teams;
+module.exports = update;
