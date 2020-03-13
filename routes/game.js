@@ -12,9 +12,27 @@ const Atlanta = new cityModel("Atlanta", 3, 0, [
   "Macon",
   "Columbus"
 ]);
+<<<<<<< HEAD
 const Athens = new cityModel("Athens", 4, 0, ["Blairsville", "Atlanta", "Augusta"]);
 const Augusta = new cityModel("Augusta", 5, 0, ["Athens", "Atlanta", "Savannah"]);
 const Columbus = new cityModel("Columbus", 6, 0, ["Atlanta", "Macon", "Albany"]);
+=======
+const Athens = new cityModel("Athens", 4, 0, [
+  "Blairsville",
+  "Atlanta",
+  "Augusta"
+]);
+const Augusta = new cityModel("Augusta", 5, 0, [
+  "Athens",
+  "Atlanta",
+  "Savannah"
+]);
+const Columbus = new cityModel("Columbus", 6, 0, [
+  "Atlanta",
+  "Macon",
+  "Albany"
+]);
+>>>>>>> fef2f99f31604054cee18363ca6d853befe35969
 const Macon = new cityModel("Macon", 7, 0, [
   "Atlanta",
   "Columbus",
@@ -25,6 +43,45 @@ const Savannah = new cityModel("Savannah", 8, 0, ["Macon", "Valdosta"]);
 const Albany = new cityModel("Albany", 9, 0, ["Columbus", "Macon", "Valdosta"]);
 const Valdosta = new cityModel("Valdosta", 10, 0, ["Albany", "Savannah"]);
 
+<<<<<<< HEAD
+=======
+const setPlayerCity = playerCityNumber => {
+  let playerCity = "";
+  switch (true) {
+    case playerCityNumber === 1:
+      playerCity = Dalton;
+      break;
+    case playerCityNumber === 2:
+      playerCity = Blairsville;
+      break;
+    case playerCityNumber === 3:
+      playerCity = Atlanta;
+      break;
+    case playerCityNumber === 4:
+      playerCity = Athens;
+      break;
+    case playerCityNumber === 5:
+      playerCity = Augusta;
+      break;
+    case playerCityNumber === 6:
+      playerCity = Columbus;
+      break;
+    case playerCityNumber === 7:
+      playerCity = Macon;
+      break;
+    case playerCityNumber === 8:
+      playerCity = Savannah;
+      break;
+    case playerCityNumber === 9:
+      playerCity = Albany;
+      break;
+    case playerCityNumber === 10:
+      playerCity = Valdosta;
+      break;
+  }
+  return playerCity;
+};
+>>>>>>> fef2f99f31604054cee18363ca6d853befe35969
 
 //Helper Functions
 const createPlayerArray = playerNumber => {
@@ -39,10 +96,7 @@ const createPlayerArray = playerNumber => {
   return playerArray;
 };
 
-
-
 router.get("/play", async (req, res, next) => {
-
   const cityStatus = await cityModel.getGame(req.session.user_id);
 
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
@@ -50,8 +104,11 @@ router.get("/play", async (req, res, next) => {
   // console.log(cityStatus);
   // console.log(playerLocations);
   // console.log(req.session);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fef2f99f31604054cee18363ca6d853befe35969
 
   res.render("template", {
     locals: {
@@ -80,9 +137,8 @@ router.get("/", async (req, res) => {
     partials: {
       partial: "newgame-partial"
     }
-
-  })
-})
+  });
+});
 
 router.post("/", async (req, res) => {
   const userData = req.session;
@@ -99,8 +155,35 @@ router.post("/", async (req, res) => {
   //need to initalized deck and player hands here
 
   res.status(200).redirect("/game/play");
-})
+});
 
+router.post("/play/athens", async (req, res) => {
+  const userData = req.session;
+  const playerTurn = 1;
+  const playerCityRespose = await playerModel.getPlayerCity(
+    `player${playerTurn}`,
+    userData.user_id
+  );
+  const playerCityNumber = Object.values(playerCityRespose)[0];
+  console.log("player city #", playerCityNumber);
+  const player = new playerModel(`player${playerTurn}`, playerCityNumber, null);
+  const playerCity = setPlayerCity(playerCityNumber);
+
+  console.log("player city", playerCity);
+
+  const canMove = player.moveCities(playerCity, Athens);
+  console.log("can move", canMove);
+  if (canMove) {
+    const movePlayer = await player.updatePlayerCity(
+      player,
+      Athens,
+      userData.user_id
+    );
+  }
+  res.status(200).redirect("/game/play");
+});
+
+<<<<<<< HEAD
 router.post("/play/atlanta", async (req, res) => {
   const userData = req.session;
   const gameState = await cityModel.getGame(req.session.user_id);
@@ -113,3 +196,6 @@ router.post("/play/atlanta", async (req, res) => {
 })
 
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> fef2f99f31604054cee18363ca6d853befe35969
