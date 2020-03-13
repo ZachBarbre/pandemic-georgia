@@ -34,7 +34,11 @@ CREATE TABLE game (
     "player1city" integer,
     "player2city" integer,
     "player3city" integer,
-    "player4city" integer
+    "player4city" integer,
+    "infectrate" integer,
+    "playeractions" integer,
+    "outbreak" integer
+    
 );
 
 
