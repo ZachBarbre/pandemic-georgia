@@ -7,6 +7,17 @@ class Player {
     this.hand = hand;
   }
 
+  static async getPlayerCount(teamID) {
+    try {
+      const response = await db.one(
+        `SELECT player1city, player2city, player3city, player4city FROM game WHERE game.id = ${teamID};`
+      );
+      console.log(response);
+    } catch (e) {
+      return e;
+    }
+  }
+
   // this might need to change depending on posting and getting locations in database for the future.
   moveCities(city, potentialDestination) {
     let newLocation = {};
