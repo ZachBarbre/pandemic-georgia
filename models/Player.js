@@ -48,7 +48,6 @@ class Player {
       const location = await db.one(
         `SELECT ${player.name}city FROM game WHERE game.id = ${teamID};`
       );
-      console.log(location);
     } catch (e) {
       return e;
     }
@@ -59,7 +58,6 @@ class Player {
       const response = await db.one(
         `SELECT playerdeck FROM game WHERE game.id = ${teamID};`
       );
-      console.log(response);
     } catch (e) {
       return e;
     }
@@ -71,7 +69,6 @@ class Player {
       const response = await db.one(
         `SELECT teams.id FROM teams WHERE teams.id = ${sessionID};`
       );
-      console.log(response.id);
       return response.id;
     } catch (e) {
       return e;
