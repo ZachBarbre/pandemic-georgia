@@ -11,13 +11,33 @@ class City {
   async postInfect(city, teamID) {
     //updates database with new infected total.
     try {
-      const value = await this.getInfect(city);
+      const value = await this.getInfect(city, teamID);
       const bit = value[Object.keys(value)[0]] + 1;
       const post = await db.one(
-        `UPDATE game SET ${city.name}infect = $1 FROM teams WHERE game.id = ${teamID};`,
+        `UPDATE game SET ${city}infect = $1 FROM teams WHERE game.id = ${teamID};`,
+        [bit]
+      );
+      // console.log("The response is", response);
+      // console.log("The post is:", post);
+      return post;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async removeInfect(city, teamID) {
+    //updates database with new infected total.
+    try {
+      const value = await this.getInfect(city, teamID);
+      console.log("this is the value:", value);
+      const bit = value[Object.keys(value)[0]] - 1;
+      console.log("the bit is:", bit);
+      const post = await db.one(
+        `UPDATE game SET ${city}infect = $1 FROM teams WHERE game.id = ${teamID};`,
         [bit]
       );
       console.log("The response is", response);
+      console.log("The post is:", post);
       return post;
     } catch (e) {
       return e;
@@ -32,12 +52,12 @@ class City {
       return e;
     }
   }
-  
-    async getInfect(city, teamID) {
+
+  async getInfect(city, teamID) {
     // getter from database for infected total.
     try {
       const response = await db.one(
-        `SELECT game.${city}Infect FROM game WHERE game.id = ${teamID};`
+        `SELECT game.${city}infect FROM game WHERE game.id = ${teamID};`
       );
       console.log("THe response is", response);
       return response;
