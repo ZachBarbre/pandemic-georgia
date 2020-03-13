@@ -1,10 +1,12 @@
 <section class="trackerContainerMobile">
     <div class="outbreak">
+      <p>Outbreak</p>
       ${cityStatus.outbreak > 0 ? `<div class="outbreakCounter">${cityStatus.outbreak}</div>`
           : `<div class="outbreakCounter">0</div>`
           }
     </div>
     <div class="infectionRate">
+      <p>Infection Rate</p>
       ${cityStatus.infectrate > 0 ? `<div class="infectionCounter">${cityStatus.infectrate}</div>`
             : `<div class="infectionCounter">1</div>`
           }
@@ -209,20 +211,47 @@
           epidemic card
         </div>
       </section>
-      <section class="trackerContainer">
-        <p>Outbreaks</p>
-        <div class="outbreak">
-          ${cityStatus.outbreak > 0 ? `<div class="outbreakCounter">${cityStatus.outbreak}</div>`
-          : `<div class="outbreakCounter">0</div>`
-          }
+      <section class="trackerAndHistoryContainer">
+        <section class="trackerContainer">
+          <p>Outbreaks</p>
+          <div class="outbreak">
+            ${cityStatus.outbreak > 0 ? `<div class="outbreakCounter">${cityStatus.outbreak}</div>`
+            : `<div class="outbreakCounter">0</div>`
+            }
+          </div>
+          <p>Infection Rate</p>
+          <div class="infectionRate">
+            ${cityStatus.infectrate > 0 ? `<div class="infectionCounter">${cityStatus.infectrate}</div>`
+              : `<div class="infectionCounter">1</div>`
+            }
+          </div>
+        </section>
+        <section class="history">
+          <ol class="historyList">
+            <li>Game history</li>
+            <li>another thing happened</li>
+            <li>some thing happened</li>
+            <li>another thing happened</li>
+            <li>some thing happened</li>
+            <li>another thing happened</li>
+            <li>some thing happened</li>
+            <li>another thing happened</li>
+            <li>some thing happened</li>
+            <li>another thing happened</li>
+          </ol>
+        </section>
+      </section>
+      <section class="playerHandBox">
+        <div class="playerHand">
+          <p>It's player ${cityStatus.playerturn}'s turn</p> 
+          player hand
         </div>
-        <p>Infection Rate</p>
-        <div class="infectionRate">
-          ${cityStatus.infectrate > 0 ? `<div class="infectionCounter">${cityStatus.infectrate}</div>`
-            : `<div class="infectionCounter">1</div>`
-          }
+        <div class="cureBox">
+          <div class="disease1">Disease 1: ${!!cityStatus.cure1 ? `Cured!` : ` Not Cured`}</div>
+          <div class="disease2">Disease 2: ${!!cityStatus.cure2 ? `Cured!` : ` Not Cured`}</div>
+          <div class="disease3">Disease 3: ${!!cityStatus.cure3 ? `Cured!` : ` Not Cured`}</div>
+          <div class="disease4">Disease 4: ${!!cityStatus.cure4 ? `Cured!` : ` Not Cured`}</div>
         </div>
       </section>
-      <div class="playerHand">players hand</div>
     </section>
   </section>
