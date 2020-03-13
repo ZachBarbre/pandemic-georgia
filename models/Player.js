@@ -12,7 +12,7 @@ class Player {
       const response = await db.one(
         `SELECT player1city, player2city, player3city, player4city FROM game WHERE game.id = ${teamID};`
       );
-      console.log(response);
+      return response;
     } catch (e) {
       return e;
     }
