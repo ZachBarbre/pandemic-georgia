@@ -21,15 +21,17 @@ app.set("view engine", "html");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: false
-}));
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
 app.use(cookieParser());
 
 app.use(
   session({
     store: new FileStore(),
-    secret: "pandemic",
+    secret: "sick",
     resave: false,
     saveUninitialized: false,
     is_logged_in: false

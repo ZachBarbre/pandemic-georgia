@@ -18,6 +18,17 @@ class Player {
     }
   }
 
+  static async getCurrentPlayer(teamID) {
+    try {
+      const response = await db.one(
+        `SELECT playerturn FROM game WHERE id = ${teamID};`
+      );
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
   // this might need to change depending on posting and getting locations in database for the future.
   moveCities(city, potentialDestination) {
     let newLocation = {};
