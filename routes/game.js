@@ -164,12 +164,14 @@ const cureCity = async (cityInstance, lowerCaseName, userData, cityNum) => {
   }
 };
 
+
+
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
 
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
 
-  // console.log(cityStatus);
+  console.log(cityStatus);
   // console.log(playerLocations);
   // console.log(req.session);
 
@@ -205,7 +207,9 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const { players } = req.body;
+  const {
+    players
+  } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
@@ -251,6 +255,7 @@ router.post("/play/:city?", async (req, res) => {
   if (playerCity === clickedCity) {
     const cure = await cureCity(clickedCity, city, userData, playerCityNumber);
   }
+  const action = await playerModel.removeAction(userData.user_id);
   res.status(200).redirect("back");
 });
 
