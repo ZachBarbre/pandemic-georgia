@@ -21,7 +21,8 @@ const Athens = new cityModel("Athens", 4, 0, [
 const Augusta = new cityModel("Augusta", 5, 0, [
   "Athens",
   "Atlanta",
-  "Savannah"
+  "Savannah",
+  "Macon"
 ]);
 const Columbus = new cityModel("Columbus", 6, 0, [
   "Atlanta",
@@ -32,12 +33,14 @@ const Macon = new cityModel("Macon", 7, 0, [
   "Atlanta",
   "Columbus",
   "Albany",
-  "Savannah"
+  "Savannah",
+  "Augusta"
 ]);
 const Savannah = new cityModel("Savannah", 8, 0, ["Macon", "Valdosta"]);
 const Albany = new cityModel("Albany", 9, 0, ["Columbus", "Macon", "Valdosta"]);
 const Valdosta = new cityModel("Valdosta", 10, 0, ["Albany", "Savannah"]);
 
+//Helper Functions
 const setPlayerCity = playerCityNumber => {
   let playerCity = "";
   switch (true) {
@@ -112,7 +115,6 @@ const setCurrentCity = cityName => {
   return currentCity;
 };
 
-//Helper Functions
 const createPlayerArray = playerNumber => {
   let playerArray = [];
   for (let i = 1; i <= 4; i++) {
@@ -164,8 +166,6 @@ const cureCity = async (cityInstance, lowerCaseName, userData, cityNum) => {
   }
 };
 
-
-
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
 
@@ -207,9 +207,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const {
-    players
-  } = req.body;
+  const { players } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
@@ -223,40 +221,55 @@ router.post("/", async (req, res) => {
 });
 
 // Post Route Generalized for Movement and Cures.
-router.post("/play/:city?", async (req, res) => {
-  const userData = req.session;
-  let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
-  playerTurn = playerTurn.playerturn;
-  const city = req.params.city;
-  console.log("params city", city);
-  const clickedCity = setCurrentCity(city);
-  console.log("clicked city;", clickedCity);
-  const playerCityRespose = await playerModel.getPlayerCity(
-    `player${playerTurn}`,
-    userData.user_id
-  );
-  const playerCityNumber = Object.values(playerCityRespose)[0];
-  console.log("player city #", playerCityNumber);
-  const player = new playerModel(`player${playerTurn}`, playerCityNumber, null);
-  const playerCity = setPlayerCity(playerCityNumber);
-  console.log("player city", playerCity);
+router.post(
+  "/play/:city?",
+  async (req, res, next) => {
+    const userData = req.session;
+    let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
+    playerTurn = playerTurn.playerturn;
+    const city = req.params.city;
+    console.log("params city", city);
+    const clickedCity = setCurrentCity(city);
+    console.log("clicked city;", clickedCity);
+    const playerCityRespose = await playerModel.getPlayerCity(
+      `player${playerTurn}`,
+      userData.user_id
+    );
+    const playerCityNumber = Object.values(playerCityRespose)[0];
+    console.log("player city #", playerCityNumber);
+    const player = new playerModel(
+      `player${playerTurn}`,
+      playerCityNumber,
+      null
+    );
+    const playerCity = setPlayerCity(playerCityNumber);
+    console.log("player city", playerCity);
 
-  if (playerCity !== clickedCity) {
-    const canMove = player.moveCities(playerCity, clickedCity);
-    console.log("can move", canMove);
-    if (canMove) {
-      const movePlayer = await player.updatePlayerCity(
-        player,
+    if (playerCity !== clickedCity) {
+      const canMove = player.moveCities(playerCity, clickedCity);
+      console.log("can move", canMove);
+      if (canMove) {
+        const movePlayer = await player.updatePlayerCity(
+          player,
+          clickedCity,
+          userData.user_id
+        );
+      }
+    }
+    if (playerCity === clickedCity) {
+      const cure = await cureCity(
         clickedCity,
-        userData.user_id
+        city,
+        userData,
+        playerCityNumber
       );
     }
+    const action = await playerModel.removeAction(userData.user_id);
+    next();
+  },
+  (req, res) => {
+    res.status(200).redirect("back");
   }
-  if (playerCity === clickedCity) {
-    const cure = await cureCity(clickedCity, city, userData, playerCityNumber);
-  }
-  const action = await playerModel.removeAction(userData.user_id);
-  res.status(200).redirect("back");
-});
+);
 
 module.exports = router;
