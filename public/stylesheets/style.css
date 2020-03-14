@@ -39,9 +39,8 @@ body {
   max-width: 640px;
 }
 
-
 .cityButton {
-  height: 3.7vh;
+  height: 2.5vw;
   width: 2.5vw;
   background-color: yellow;
   border-radius: 50%;
@@ -51,7 +50,7 @@ body {
   font-family: "capture_itregular";
   color: white;
   font-size: 2.5vh;
-  height: 3.7vh;
+  height: 2.5vw;
   width: 2.5vw;
   background-color: black;
   border-radius: 50%;
@@ -116,26 +115,48 @@ button {
   height: 100%;
   width: 50%;
   border-bottom: 1px solid black;
+  border-right: 1px solid black;
 }
 
 .epidemic {
-  border-left: 2px solid black;
+  border-left: 1px solid black;
   text-align: center;
   height: 100%;
   width: 50%;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid black;
 }
 
 .trackerContainer {
   display: flex;
   border-top: 1px solid black;
-  border-right: 2px solid black;
+  border-right: 1px solid black;
   flex-direction: column;
   align-items: center;
   color: black;
   justify-content: space-evenly;
   width: 50%;
+  height: 100%;
+}
+
+.historyNav {
+  height: 4vh;
+  width: 100%;
+  text-align: center;
+}
+
+
+.trackerAndHistoryContainer {
+  display: flex;
+  width: 100%;
   height: 33%;
+}
+
+.history {
+  border-left: 1px solid black;
+  text-align: center;
+  border-top: 1px solid black;
+  width: 50%;
+  overflow-y: scroll;
 }
 
 .outbreak {
@@ -179,11 +200,30 @@ button {
   border-radius: 50%;
 }
 
-.playerHand {
+.playerHandBox {
+  display: flex;
   border-top: 2px solid black;
-  text-align: center;
   width: 100%;
-  height: 34%;
+  height: 34%
+}
+
+.playerHand {
+  /* border-right: 1px solid black; */
+  text-align: center;
+  align-items: center;
+  width: 75%;
+  height: 100%;
+}
+
+.cureBox {
+  font-size: 1.5vh;
+  border-left: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 0vh 2vh;
+  width: 25%;
+  height: 100%;
 }
 
 .gameBoard {
@@ -395,6 +435,22 @@ a {
   height: 33%;
 }
 
+.disease1 {
+  color: red;
+}
+
+.disease2 {
+  color: white;
+}
+
+.disease3 {
+  color: lawngreen;
+}
+
+.disease4 {
+  color: purple;
+}
+
 @media only screen and (max-width: 800px) {
 
   html {
@@ -416,9 +472,19 @@ a {
     border-bottom: none;
   }
 
-  button {
+  /* button {
     height: 3vh;
     width: 4vw;
+  } */
+  .cityButton {
+    height: 5.6vw;
+    width: 5.6vw;
+  }
+
+  .cityInfectedButton {
+    font-size: 2.5vh;
+    height: 5.6vw;
+    width: 5.6vw;
   }
 
   .wholeBoard {
@@ -426,17 +492,20 @@ a {
     height: 95vh;
     display: flex;
     flex-direction: column;
-    margin: 6vh auto 9vh auto;
+    margin: 3vh auto 9vh auto;
     max-width: 1300px;
   }
 
   .infectInfo {
-    height: 50%;
+    height: 33%;
   }
 
   .playerHand {
+    height: 33%;
+  }
+
+  .playerHandBox {
     border-top: 2px solid black;
-    height: 50%;
   }
 
   .trackerContainer {
@@ -446,13 +515,27 @@ a {
   }
 
   .trackerContainerMobile {
+    font-family: "capture_itregular";
     display: flex;
+    font-size: 2vh;
     visibility: visible;
     flex-direction: row;
     height: 2vh;
     color: white;
-    margin: 3vh auto 6vh auto;
+    margin: 3vh auto 2vh auto;
     width: 100%;
+  }
+
+  .cureBox {
+    font-size: 1vh;
+    border-left: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 0vh 1vh;
+    width: 25%;
+    height: 100%;
+    overflow-y: scroll;
   }
 
   .gameBoard {
@@ -475,12 +558,11 @@ a {
     align-items: center;
     justify-content: space-evenly;
     border: 2px solid black;
-    width: 5vw;
-    height: 5vw;
+    width: 6vw;
+    height: 6vw;
     color: black;
     border-radius: 50%;
   }
-
 
   .infectionCounter {
     display: flex;
@@ -488,11 +570,25 @@ a {
     align-items: center;
     justify-content: space-evenly;
     border: 2px solid black;
-    width: 5vw;
-    height: 5vw;
+    width: 6vw;
+    height: 6vw;
     color: white;
     background-color: black;
     border-radius: 50%;
+  }
+
+  .trackerAndHistoryContainer {
+    display: flex;
+    width: 100%;
+    height: 33%;
+  }
+
+  .history {
+    border-left: none;
+    text-align: center;
+    border-top: 2px solid black;
+    width: 100%;
+    overflow: scroll;
   }
 
 

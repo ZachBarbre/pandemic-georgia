@@ -87,6 +87,34 @@ const createPlayerArray = playerNumber => {
   return playerArray;
 };
 
+const cureCity = async (cityInstance, lowerCaseName, userData, cityNum) => {
+  const gameState = await cityModel.getGame(userData.user_id);
+  let cityinfect = lowerCaseName + "infect";
+  switch (gameState.playerturn) {
+    case 1:
+      if (gameState.player1city === cityNum && gameState[cityinfect] > 0) {
+        const cure = await cityInstance.removeInfect(lowerCaseName, userData.user_id);
+      }
+      break;
+    case 2:
+      if (gameState.player2city === cityNum && gameState[cityinfect] > 0) {
+        const cure = await cityInstance.removeInfect(lowerCaseName, userData.user_id);
+      }
+      break;
+    case 3:
+      if (gameState.player3city === cityNum && gameState[cityinfect] > 0) {
+        const cure = await cityInstance.removeInfect(lowerCaseName, userData.user_id);
+      }
+      break;
+    case 4:
+      if (gameState.player4city === cityNum && gameState[cityinfect] > 0) {
+        const cure = await cityInstance.removeInfect(lowerCaseName, userData.user_id);
+      }
+      break;
+  }
+
+}
+
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
 
@@ -128,7 +156,9 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const { players } = req.body;
+  const {
+    players
+  } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
@@ -139,6 +169,22 @@ router.post("/", async (req, res) => {
   //need to initalized deck and player hands here
 
   res.status(200).redirect("/game/play");
+});
+
+
+//POST routes/// 
+
+
+router.post("/play/dalton", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Dalton, "dalton", userData, 1);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/blairsville", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Blairsville, "blairsville", userData, 2);
+  res.status(200).redirect('back');
 });
 
 router.post("/play/athens", async (req, res) => {
@@ -155,7 +201,7 @@ router.post("/play/athens", async (req, res) => {
 
   console.log("player city", playerCity);
 
-  const canMove = player.moveCities(playerCity, Athens);
+  const canMove = player.moveCities(playerCity, Athens, 4);
   console.log("can move", canMove);
   if (canMove) {
     const movePlayer = await player.updatePlayerCity(
@@ -164,7 +210,52 @@ router.post("/play/athens", async (req, res) => {
       userData.user_id
     );
   }
-  res.status(200).redirect("/game/play");
+  const cure = await cureCity(Athens, "athens", userData, 4);
+  res.status(200).redirect('back');
 });
+
+router.post("/play/atlanta", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Atlanta, "atlanta", userData, 3);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/augusta", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Augusta, "augusta", userData, 5);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/columbus", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Columbus, "columbus", userData, 6);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/macon", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Macon, "macon", userData, 7);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/savannah", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Savannah, "savannah", userData, 8);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/albany", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Albany, "albany", userData, 9);
+  res.status(200).redirect('back');
+});
+
+router.post("/play/valdosta", async (req, res) => {
+  const userData = req.session;
+  const cure = await cureCity(Valdosta, "valdosta", userData, 10);
+  res.status(200).redirect('back');
+});
+
+
 
 module.exports = router;
