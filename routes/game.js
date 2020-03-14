@@ -4,13 +4,14 @@ const cityModel = require("../models/Cities");
 const playerModel = require("../models/Player");
 const teamModel = require("../models/teamModel");
 
-const Dalton = new cityModel("dalton", 1, 0, ["Blairsville", "Atlanta"]);
+const Dalton = new cityModel("Dalton", 1, 0, ["Blairsville", "Atlanta"]);
 const Blairsville = new cityModel("Blairsville", 2, 0, ["Dalton", "Athens"]);
 const Atlanta = new cityModel("Atlanta", 3, 0, [
   "Dalton",
   "Athens",
   "Macon",
-  "Columbus"
+  "Columbus",
+  "Augusta"
 ]);
 const Athens = new cityModel("Athens", 4, 0, [
   "Blairsville",
@@ -72,6 +73,43 @@ const setPlayerCity = playerCityNumber => {
       break;
   }
   return playerCity;
+};
+
+const setCurrentCity = cityName => {
+  let currentCity = "";
+  switch (true) {
+    case cityName === "dalton":
+      currentCity = Dalton;
+      break;
+    case cityName === "blairsville":
+      currentCity = Blairsville;
+      break;
+    case cityName === "atlanta":
+      currentCity = Atlanta;
+      break;
+    case cityName === "athens":
+      currentCity = Athens;
+      break;
+    case cityName === "augusta":
+      currentCity = Augusta;
+      break;
+    case cityName === "columbus":
+      currentCity = Columbus;
+      break;
+    case cityName === "macon":
+      currentCity = Macon;
+      break;
+    case cityName === "savannah":
+      currentCity = Savannah;
+      break;
+    case cityName === "albany":
+      currentCity = Albany;
+      break;
+    case cityName === "valdosta":
+      currentCity = Valdosta;
+      break;
+  }
+  return currentCity;
 };
 
 //Helper Functions
@@ -141,9 +179,14 @@ router.post("/", async (req, res) => {
   res.status(200).redirect("/game/play");
 });
 
-router.post("/play/athens", async (req, res) => {
+router.post("/play/:city?", async (req, res) => {
+  const city = req.params.city;
+  console.log("params city", city);
+  const clickedCity = setCurrentCity(city);
+  console.log("clicked city;", clickedCity);
   const userData = req.session;
-  const playerTurn = 1;
+  let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
+  playerTurn = playerTurn.playerturn;
   const playerCityRespose = await playerModel.getPlayerCity(
     `player${playerTurn}`,
     userData.user_id
@@ -155,16 +198,16 @@ router.post("/play/athens", async (req, res) => {
 
   console.log("player city", playerCity);
 
-  const canMove = player.moveCities(playerCity, Athens);
+  const canMove = player.moveCities(playerCity, clickedCity);
   console.log("can move", canMove);
   if (canMove) {
     const movePlayer = await player.updatePlayerCity(
       player,
-      Athens,
+      clickedCity,
       userData.user_id
     );
   }
-  res.status(200).redirect("/game/play");
+  res.status(200).redirect("back");
 });
 
 module.exports = router;

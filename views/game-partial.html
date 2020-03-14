@@ -15,7 +15,7 @@
     <section class="gameBoard">
       <section class="north">
         <div class="n1">
-          <form action="" method="POST">
+          <form action="/game/play/dalton" method="POST">
             <input type="hidden" name="dalton" />
             <label>Dalton
               ${cityStatus.daltoninfect === 0 ? `
@@ -33,8 +33,8 @@
           </form>
         </div>
         <div class="n2">
-          <form action="" method="POST">
-            <input type="hidden" name="gainesville" />
+          <form action="/game/play/blairsville" method="POST">
+            <input type="hidden" name="blairsville" />
             <label>Blairsville
               ${cityStatus.blairsvilleinfect === 0 ? `
                 <button class="cityButton" type="submit"></button>
@@ -71,7 +71,7 @@
       </section>
       <section class="middle">
         <div class="m1">
-          <form class="columbus" action="" method="POST">
+          <form class="columbus" action="/game/play/columbus" method="POST">
             <input type="hidden" name="columbus" />
             <label>Columbus
               ${cityStatus.columbusinfect === 0 ? `
@@ -89,7 +89,7 @@
           </form>
         </div>
         <div class="m2">
-          <form action="" method="POST">
+          <form action="/game/play/atlanta" method="POST">
             <input type="hidden" name="atlanta" />
             <label>Atlanta
               ${cityStatus.atlantainfect === 0 ? `
@@ -105,7 +105,7 @@
               </div>
             </label>
           </form>
-          <form class="macon" action="" method="POST">
+          <form class="macon" action="/game/play/macon" method="POST">
             <input type="hidden" name="macon" />
             <label>Macon
               ${cityStatus.maconinfect === 0 ? `
@@ -123,7 +123,7 @@
           </form>
         </div>
         <div class="m3">
-          <form action="" method="POST">
+          <form action="/game/play/augusta" method="POST">
             <input type="hidden" name="augusta" />
             <label>Augusta
               ${cityStatus.augustainfect === 0 ? `
@@ -144,7 +144,7 @@
       </section>
       <section class="south">
         <div class="s1">
-          <form action="" method="POST">
+          <form action="/game/play/albany" method="POST">
             <input type="hidden" name="albany" />
             <label>Albany
               ${cityStatus.albanyinfect === 0 ? `
@@ -163,7 +163,7 @@
         </div>
         <div class="s2"></div>
         <div class="s3">
-          <form action="" method="POST">
+          <form action="/game/play/valdosta" method="POST">
             <input type="hidden" name="valdosta" />
             <label>Valdosta
               ${cityStatus.valdostainfect === 0 ? `
@@ -181,7 +181,7 @@
           </form>
         </div>
         <div class="s4">
-          <form action="" method="POST">
+          <form action="/game/play/savannah" method="POST">
             <input type="hidden" name="savannah" />
           <label>Savannah
             ${cityStatus.savannahinfect === 0 ? `
