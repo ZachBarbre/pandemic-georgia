@@ -217,31 +217,16 @@ router.post("/", async (req, res) => {
 
   res.status(200).redirect("/game/play");
 });
-// this needs to be generalized to use both cure and movement
-// router.post("/play/:city?", async (req, res) => {
-//   const city = req.params.city;
-//   console.log("params city", city);
-//   const clickedCity = setCurrentCity(city);
-//   console.log("clicked city;", clickedCity);
 
-//POST routes///
-
-router.post("/play/dalton", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Dalton, "dalton", userData, 1);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/blairsville", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Blairsville, "blairsville", userData, 2);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/athens", async (req, res) => {
+// Post Route Generalized for Movement and Cures.
+router.post("/play/:city?", async (req, res) => {
   const userData = req.session;
   let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
   playerTurn = playerTurn.playerturn;
+  const city = req.params.city;
+  console.log("params city", city);
+  const clickedCity = setCurrentCity(city);
+  console.log("clicked city;", clickedCity);
   const playerCityRespose = await playerModel.getPlayerCity(
     `player${playerTurn}`,
     userData.user_id
@@ -250,63 +235,22 @@ router.post("/play/athens", async (req, res) => {
   console.log("player city #", playerCityNumber);
   const player = new playerModel(`player${playerTurn}`, playerCityNumber, null);
   const playerCity = setPlayerCity(playerCityNumber);
-
   console.log("player city", playerCity);
 
-  const canMove = player.moveCities(playerCity, clickedCity);
-  console.log("can move", canMove);
-  if (canMove) {
-    const movePlayer = await player.updatePlayerCity(
-      player,
-      clickedCity,
-      userData.user_id
-    );
+  if (playerCity !== clickedCity) {
+    const canMove = player.moveCities(playerCity, clickedCity);
+    console.log("can move", canMove);
+    if (canMove) {
+      const movePlayer = await player.updatePlayerCity(
+        player,
+        clickedCity,
+        userData.user_id
+      );
+    }
   }
-  // res.status(200).redirect("back"); this one needs to be fixed
-
-  const cure = await cureCity(Athens, "athens", userData, 4);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/atlanta", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Atlanta, "atlanta", userData, 3);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/augusta", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Augusta, "augusta", userData, 5);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/columbus", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Columbus, "columbus", userData, 6);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/macon", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Macon, "macon", userData, 7);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/savannah", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Savannah, "savannah", userData, 8);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/albany", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Albany, "albany", userData, 9);
-  res.status(200).redirect("back");
-});
-
-router.post("/play/valdosta", async (req, res) => {
-  const userData = req.session;
-  const cure = await cureCity(Valdosta, "valdosta", userData, 10);
+  if (playerCity === clickedCity) {
+    const cure = await cureCity(clickedCity, city, userData, playerCityNumber);
+  }
   res.status(200).redirect("back");
 });
 
