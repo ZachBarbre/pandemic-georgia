@@ -1,6 +1,8 @@
-function randomCard(card) {
-  return card[Math.floor(Math.random() * card.length)];
+function randomCard(cards) {
+  return cards[Math.floor(Math.random() * cards.length)];
 }
 
-const card = [red, green, black, yellow];
-console.log(random_Card(card));
+const cards = [red, green, black, yellow];
+console.log(randomCard(cards));
+let card = randomCard(cards);
+module.exports = card;
