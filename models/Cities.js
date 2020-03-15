@@ -32,6 +32,20 @@ class City {
       return e;
     }
   }
+
+  async getInfect(city, teamID) {
+    // getter from database for infected total.
+    try {
+      const response = await db.one(
+        `SELECT game.${city}infect FROM game WHERE game.id = ${teamID};`
+      );
+      console.log("THe response is", response);
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
   async removeInfect(city, teamID) {
     //updates database with new infected total.
     try {
@@ -46,19 +60,6 @@ class City {
       // console.log("The response is", response);
       // console.log("The post is:", post);
       return post;
-    } catch (e) {
-      return e;
-    }
-  }
-
-  async getInfect(city, teamID) {
-    // getter from database for infected total.
-    try {
-      const response = await db.one(
-        `SELECT game.${city}infect FROM game WHERE game.id = ${teamID};`
-      );
-      console.log("THe response is", response);
-      return response;
     } catch (e) {
       return e;
     }
