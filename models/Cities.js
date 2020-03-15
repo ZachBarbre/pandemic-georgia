@@ -32,8 +32,8 @@ class City {
       return e;
     }
   }
-  
-    async getInfect(city, teamID) {
+
+  async getInfect(city, teamID) {
     // getter from database for infected total.
     try {
       const response = await db.one(
@@ -45,7 +45,6 @@ class City {
       return e;
     }
   }
-
 
   static async initCity(teamID, playerArray) {
     const response = await db.one(
