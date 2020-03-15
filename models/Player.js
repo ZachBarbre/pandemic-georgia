@@ -18,6 +18,17 @@ class Player {
     }
   }
 
+  static async getCurrentPlayer(teamID) {
+    try {
+      const response = await db.one(
+        `SELECT playerturn FROM game WHERE id = ${teamID};`
+      );
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
   // this might need to change depending on posting and getting locations in database for the future.
   moveCities(city, potentialDestination) {
     let newLocation = {};
@@ -26,9 +37,10 @@ class Player {
         newLocation = potentialDestination;
         i = 15;
         this.location = newLocation;
-        return this.location; //possibly needs to just return true for a check. Posting city achieves this result
+        return true; //possibly needs to just return true for a check. Posting city achieves this result
       }
     }
+    return false;
     console.log("Sorry, you couldn't move there!");
   }
 
@@ -42,12 +54,53 @@ class Player {
       return e;
     }
   }
+  static async removeAction(teamID) {
+    try {
+      const response = await db.one(`UPDATE game SET actions = actions - 1 FROM teams WHERE game.id = ${teamID} RETURNING *;`);
+      console.log("response to removeAction is:", response);
+      switch (response.playerturn) {
+        case 1:
+          if (response.actions <= 0) {
+            const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+            break;
+          }
+          case 2:
+            if (response.actions <= 0 && response.player3city === null) {
+              console.log('hi 3 didnt work');
+              const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+              break;
+            } else if (response.actions <= 0) {
+              const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+              break;
+            }
+            case 3:
+              if (response.actions <= 0 && response.player4city === null) {
+                const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+                break;
+              } else if (response.actions <= 0) {
+                const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+                break;
+              }
+              case 4:
+                if (response.actions <= 0) {
+                  const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+                  break;
+                }
 
-  async getPlayerCity(player, teamID) {
+      }
+
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  static async getPlayerCity(playerNumber, teamID) {
     try {
       const location = await db.one(
-        `SELECT ${player.name}city FROM game WHERE game.id = ${teamID};`
+        `SELECT ${playerNumber}city FROM game WHERE game.id = ${teamID};`
       );
+      return location;
     } catch (e) {
       return e;
     }
