@@ -18,6 +18,25 @@ class Player {
     }
   }
 
+  static async recordMove(player, currentCity, destination, teamID) {
+    try {
+      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`, [`Player ${player} moved from ${currentCity} to ${destination},`, teamID]);
+      return record;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  static async recordCure(player, city, teamID) {
+    try {
+      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) FROM teams WHERE game.id = $2;`,
+        [`Player ${player} cured ${city} for one,`, teamID]);
+      return record;
+    } catch (e) {
+      return e;
+    }
+  }
+
   static async getCurrentPlayer(teamID) {
     try {
       const response = await db.one(
