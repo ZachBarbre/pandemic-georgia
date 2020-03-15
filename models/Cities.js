@@ -46,6 +46,25 @@ class City {
     }
   }
 
+  async removeInfect(city, teamID) {
+    //updates database with new infected total.
+    try {
+      const value = await this.getInfect(city, teamID);
+      //console.log("this is the value:", value);
+      const bit = value[Object.keys(value)[0]] - 1;
+      //console.log("the bit is:", bit);
+      const post = await db.one(
+        `UPDATE game SET ${city}infect = $1 FROM teams WHERE game.id = ${teamID};`,
+        [bit]
+      );
+      // console.log("The response is", response);
+      // console.log("The post is:", post);
+      return post;
+    } catch (e) {
+      return e;
+    }
+  }
+
   static async initCity(teamID, playerArray) {
     const response = await db.one(
       `INSERT INTO game(id, daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1hand, player2hand, player3hand, player4hand, cure1, cure2, cure3, cure4, playerdeck, infectdeck, player1city, player2city, player3city, player4city, infectrate, playeractions, outbreak, playerturn, actions) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30) RETURNING id`,
