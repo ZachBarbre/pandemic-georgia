@@ -96,6 +96,7 @@ class PlayerDeck {
     return playerDeck;
   }
 
+  //post prototype.
   async postPlayerDeck(deck, teamID) {
     let posting = "1";
     const card = Object.keys(deck);
@@ -109,12 +110,25 @@ class PlayerDeck {
       return e;
     }
   }
-  async getPlayerDeck(teamID) {
+  static async getPlayerDeck(teamID) {
     try {
       const response = await db.one(
         `SELECT playerdeck FROM game WHERE game.id = ${teamID};`
       );
       return response.playerdeck;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async drawCard(teamID) {
+    try {
+      const deck = await PlayerDeck.getPlayerDeck(teamID);
+      console.log(deck);
+      const drawnCard = await deck.pop();
+      //post popped deck.
+      console.log(drawnCard);
+      return drawnCard;
     } catch (e) {
       return e;
     }
