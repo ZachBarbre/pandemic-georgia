@@ -3,6 +3,8 @@ const router = express.Router();
 const cityModel = require("../models/Cities");
 const playerModel = require("../models/Player");
 const teamModel = require("../models/teamModel");
+const deckModel = require("../models/Deck");
+const gameFunctions = require("../models/gamefunctions");
 
 const Dalton = new cityModel("Dalton", 1, 0, ["Blairsville", "Atlanta"]);
 const Blairsville = new cityModel("Blairsville", 2, 0, ["Dalton", "Athens"]);
@@ -170,17 +172,20 @@ router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
 
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
-
+  const playerDeck = await deckModel.getPlayerDeck(req.session.user_id);
+  //console.log("the game deck is:", playerDeck);
   console.log(cityStatus);
   // console.log(playerLocations);
   // console.log(req.session);
+
 
   res.render("template", {
     locals: {
       title: "Pandemic Georgia",
       userData: req.session,
       playerLocations: Object.values(playerLocations),
-      cityStatus: cityStatus
+      cityStatus: cityStatus,
+      playerDeck: playerDeck
     },
     partials: {
       partial: "game-partial"
@@ -207,15 +212,29 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const { players } = req.body;
+  const {
+    players
+  } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
   const playerArray = createPlayerArray(players);
-  const newGame = await cityModel.initCity(userData.user_id, playerArray);
-  console.log("Created Game with id:", newGame);
 
-  //need to initalized deck and player hands here
+  // const newGame = await cityModel.initCity(userData.user_id, playerArray);
+
+
+  //deck initialization: creation, adding epidemics, shuffling and pushing to DB.
+  //leaving console logs in there to see th steps in action if you like.
+
+  const deckInit = await new deckModel().buildDeck();
+  //console.log("this is the new deck:", deckInit);
+  const addingEpidemics = await new deckModel().addEpidemics(deckInit);
+  //console.log("deck with epidemics in it:", addingEpidemics);
+  const completedDeck = await new deckModel().shuffleTwo(addingEpidemics);
+  //console.log("this is the complete and shuffled player deck:", completedDeck);
+  //const postDeck = await deckModel.postPlayerDeck(completedDeck, userData.user_id);
+  const newGame = await cityModel.initCity(userData.user_id, playerArray, completedDeck);
+  //console.log("Created Game with id:", newGame);
 
   res.status(200).redirect("/game/play");
 });
@@ -224,52 +243,54 @@ router.post("/", async (req, res) => {
 router.post(
   "/play/:city?",
   async (req, res, next) => {
-    const userData = req.session;
-    let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
-    playerTurn = playerTurn.playerturn;
-    const city = req.params.city;
-    console.log("params city", city);
-    const clickedCity = setCurrentCity(city);
-    console.log("clicked city;", clickedCity);
-    const playerCityRespose = await playerModel.getPlayerCity(
-      `player${playerTurn}`,
-      userData.user_id
-    );
-    const playerCityNumber = Object.values(playerCityRespose)[0];
-    console.log("player city #", playerCityNumber);
-    const player = new playerModel(
-      `player${playerTurn}`,
-      playerCityNumber,
-      null
-    );
-    const playerCity = setPlayerCity(playerCityNumber);
-    console.log("player city", playerCity);
-
-    if (playerCity !== clickedCity) {
-      const canMove = player.moveCities(playerCity, clickedCity);
-      console.log("can move", canMove);
-      if (canMove) {
-        const movePlayer = await player.updatePlayerCity(
-          player,
-          clickedCity,
-          userData.user_id
-        );
-      }
-    }
-    if (playerCity === clickedCity) {
-      const cure = await cureCity(
-        clickedCity,
-        city,
-        userData,
-        playerCityNumber
+      const userData = req.session;
+      let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
+      playerTurn = playerTurn.playerturn;
+      const city = req.params.city;
+      //console.log("params city", city);
+      const clickedCity = setCurrentCity(city);
+      console.log("clicked city;", clickedCity);
+      const playerCityRespose = await playerModel.getPlayerCity(
+        `player${playerTurn}`,
+        userData.user_id
       );
+      const playerCityNumber = Object.values(playerCityRespose)[0];
+      console.log("player city #", playerCityNumber);
+      const player = new playerModel(
+        `player${playerTurn}`,
+        playerCityNumber,
+        null
+      );
+      const playerCity = setPlayerCity(playerCityNumber);
+      console.log("player city", playerCity);
+
+      if (playerCity !== clickedCity) {
+        const canMove = player.moveCities(playerCity, clickedCity);
+        console.log("can move", canMove);
+        if (canMove) {
+          const movePlayer = await player.updatePlayerCity(
+            player,
+            clickedCity,
+            userData.user_id
+          );
+          const recordMove = await playerModel.recordMove(playerTurn, playerCity.name, clickedCity.name, userData.user_id);
+        }
+      }
+      if (playerCity === clickedCity) {
+        const cure = await cureCity(
+          clickedCity,
+          city,
+          userData,
+          playerCityNumber
+        );
+        const recordCure = await playerModel.recordCure(playerTurn, clickedCity.name, userData.user_id);
+      }
+      const action = await playerModel.removeAction(userData.user_id);
+      next();
+    },
+    (req, res) => {
+      res.status(200).redirect("back");
     }
-    const action = await playerModel.removeAction(userData.user_id);
-    next();
-  },
-  (req, res) => {
-    res.status(200).redirect("back");
-  }
 );
 
 module.exports = router;
