@@ -177,6 +177,7 @@ router.get("/play", async (req, res, next) => {
   // console.log(playerLocations);
   // console.log(req.session);
 
+
   res.render("template", {
     locals: {
       title: "Pandemic Georgia",
@@ -281,6 +282,7 @@ router.post(
           userData,
           playerCityNumber
         );
+
         const random = Math.floor(Math.random() * 10) + 1
         if (random === 2) {
           const researchChance = await gameFunctions.increaseCureCountdown(userData.user_id);
@@ -294,7 +296,6 @@ router.post(
         const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
       }
       const action = await playerModel.removeAction(userData.user_id);
-
       next();
     },
     (req, res) => {
