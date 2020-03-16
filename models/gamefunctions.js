@@ -148,17 +148,26 @@ class Functions {
     }
   }
 
-  async increaseCureCountdown(teamID) {
+  // static async increaseCureCountdown(teamID) {
+  //   try {
+  //     const currentCurePercent = await this.getCureCountdown(teamID);
+  //     const cureProperty = currentCurePercent.cure_countdown;
+  //     const increasedNumber = Math.floor(Math.random() * 10);
+  //     const increaseCureCountdown = increasedNumber + cureProperty;
+  //     const increasedFunction = await this.postCureProperty(
+  //       teamID,
+  //       increaseCureCountdown
+  //     );
+  //     return increasedFunction;
+  //   } catch (e) {
+  //     return e;
+  //   }
+  // }
+
+  static async increaseCureCountdown(teamID) {
     try {
-      const currentCurePercent = await this.getCureCountdown(teamID);
-      const cureProperty = currentCurePercent.cure_countdown;
-      const increasedNumber = Math.floor(Math.random() * 10);
-      const increaseCureCountdown = increasedNumber + cureProperty;
-      const increasedFunction = await this.postCureProperty(
-        teamID,
-        increaseCureCountdown
-      );
-      return increasedFunction;
+      const response = await db.one(`UPDATE game SET cure_countdown = cure_countdown + 1 WHERE id = ${teamID};`)
+      return response;
     } catch (e) {
       return e;
     }
