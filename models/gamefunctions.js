@@ -2,17 +2,27 @@ const db = require("./con");
 
 class Functions {
   constructor() {}
-  async incrementInfection(oldNumber, teamsID) {
+  static async incrementInfection(oldNumber, teamsID) {
     try {
       const newNumber = oldNumber + 1;
       const value = await db.one(
-        `UPDATE game.infection SET outbreak = ${newNumber} FROM teams WHERE game.id = ${teamsID};`
+        `UPDATE game SET outbreak = ${newNumber} FROM teams WHERE game.id = ${teamsID};`
       );
       return value;
     } catch (e) {
       return e;
     }
   }
+
+  static async decreaseDay(teamID) {
+    try {
+      const response = await db.one(`UPDATE game SET death_countdown = death_countdown - 1 WHERE game.id = ${teamID};`);
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
   async incrementOutbreak(oldNumber, teamsID) {
     const newNumber = oldNumber + 1;
     const value = await db.one(
@@ -88,8 +98,7 @@ class Functions {
       if (cureArray[i] === false) {
         i = 5;
         return false;
-      } else {
-      }
+      } else {}
     }
     return true;
   }
