@@ -203,12 +203,13 @@
     </section>
   </section>
   <section class="gameInfo">
-    <section class="infectInfo">
-      <div class="infectDraw">
-        drawn infected cards
+    <section class="turnAndTimer">
+      <div class="turnInfo">
+        <p>Player ${cityStatus.playerturn}</p>
+        <p>actions remaining: ${cityStatus.actions}</p>
       </div>
       <div class="epidemic">
-        epidemic card
+        <p class="epidemicText">Days left to discover a cure.</p>
       </div>
     </section>
     <section class="trackerAndHistoryContainer">
@@ -228,29 +229,20 @@
       </section>
       <section class="history">
         <ol class="historyList">
-          <li>Game history</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
+          <li>Game History</li>
+          ${cityStatus.history.split(',').map(item => {
+            return `<li>${item}</li>`;
+          }).join('')}
         </ol>
       </section>
     </section>
-    <section class="playerHandBox">
-      <div class="playerHand">
-        <p>Player ${cityStatus.playerturn} actions remaining: ${cityStatus.actions}</p>
-        player hand
-      </div>
+    <section class="researchBox">
+      <p class="researchText">Research breakthroughs</p>
       <div class="cureBox">
-        <div class="disease1">Disease 1: ${!!cityStatus.cure1 ? `Cured!` : ` Not Cured`}</div>
-        <div class="disease2">Disease 2: ${!!cityStatus.cure2 ? `Cured!` : ` Not Cured`}</div>
-        <div class="disease3">Disease 3: ${!!cityStatus.cure3 ? `Cured!` : ` Not Cured`}</div>
-        <div class="disease4">Disease 4: ${!!cityStatus.cure4 ? `Cured!` : ` Not Cured`}</div>
+        <div class="research">1</div>
+        <div class="research">2</div>
+        <div class="research">3</div>
+        <div class="research">4</div>
       </div>
     </section>
   </section>
