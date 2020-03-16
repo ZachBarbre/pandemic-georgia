@@ -11,13 +11,15 @@ class City {
   async postInfect(city, teamID) {
     //updates database with new infected total.
     try {
-      const value = await this.getInfect(city);
+      const value = await this.getInfect(city.name, teamID);
       const bit = value[Object.keys(value)[0]] + 1;
+      if (bit > 3) {
+        return false;
+      }
       const post = await db.one(
-        `UPDATE game SET ${city.name}infect = $1 FROM teams WHERE game.id = ${teamID};`,
+        `UPDATE game SET ${city.name}infect = $1 WHERE game.id = ${teamID} RETURNING game.${city.name}infect;`,
         [bit]
       );
-      console.log("The response is", response);
       return post;
     } catch (e) {
       return e;
@@ -97,7 +99,7 @@ class City {
         0,
         1,
         4,
-        ''
+        ""
       ]
     );
     return response;
