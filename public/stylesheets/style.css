@@ -35,6 +35,13 @@ body {
   font-family: "capture_itregular", sans-serif;
 }
 
+.researchText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .login {
   max-width: 640px;
 }
@@ -102,7 +109,7 @@ button {
   border: 2px solid black;
 }
 
-.infectInfo {
+.turnAndTimer {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -110,10 +117,12 @@ button {
   height: 33%;
 }
 
-.infectDraw {
+.turnInfo {
   text-align: center;
+  font-size: 4vh;
   height: 100%;
   width: 50%;
+  padding: 2vh 1vh;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 }
@@ -124,6 +133,12 @@ button {
   height: 100%;
   width: 50%;
   border-bottom: 1px solid black;
+}
+
+.epidemicText {
+  font-size: 3vh;
+  padding: 1vh 1vh;
+  text-align: center;
 }
 
 .trackerContainer {
@@ -146,12 +161,15 @@ button {
 
 
 .trackerAndHistoryContainer {
+  text-align: center;
+  font-size: 2.5vh;
   display: flex;
   width: 100%;
   height: 33%;
 }
 
 .history {
+  font-size: 2vh;
   border-left: 1px solid black;
   text-align: center;
   border-top: 1px solid black;
@@ -164,7 +182,6 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  /* border-bottom: 2px solid black; */
 }
 
 .infectionRate {
@@ -180,8 +197,8 @@ button {
   align-items: center;
   justify-content: space-evenly;
   border: 2px solid black;
-  width: 2vw;
-  height: 2vw;
+  width: 3vw;
+  height: 3vw;
   color: black;
   background-color: lime;
   border-radius: 50%;
@@ -193,37 +210,54 @@ button {
   align-items: center;
   justify-content: space-evenly;
   border: 2px solid black;
-  width: 2vw;
-  height: 2vw;
+  width: 3vw;
+  height: 3vw;
   color: white;
   background-color: black;
   border-radius: 50%;
 }
 
-.playerHandBox {
+.researchBox {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   border-top: 2px solid black;
   width: 100%;
   height: 34%
 }
 
-.playerHand {
-  /* border-right: 1px solid black; */
-  text-align: center;
+.cureBox {
+  font-size: 2.5vh;
+  display: flex;
   align-items: center;
-  width: 75%;
+  justify-content: space-evenly;
+  padding: 2vh 2vh;
+  width: 100%;
   height: 100%;
 }
 
-.cureBox {
-  font-size: 1.5vh;
-  border-left: 2px solid black;
+.researchText {
+  font-size: 3vh;
+  padding: 2vh 2vh;
+}
+
+.countdownNum {
+  font-size: 5vh;
+}
+
+.research {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-evenly;
-  padding: 0vh 2vh;
-  width: 25%;
-  height: 100%;
+  border: 2px solid black;
+  width: 3vw;
+  height: 3vw;
+  align-items: center;
+  color: black;
+  background-color: white;
+  border-radius: 50%;
+
 }
 
 .gameBoard {
@@ -451,13 +485,44 @@ a {
   color: purple;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1500px) {
+
+  /* .turnInfo {
+    font-size: 2.8vh;
+  } */
+
+  .cureBox {
+    font-size: 2.2vh;
+  }
+
+}
+
+@media only screen and (max-width: 1200px) {
+
+  .turnInfo {
+    font-size: 2.8vh;
+  }
+
+  .cureBox {
+    font-size: 2.2vh;
+  }
+
+}
+
+
+@media only screen and (max-width: 750px) {
 
   html {
     font-size: 2vw;
   }
 
-  .infectDraw {
+  .countdownNum {
+    font-size: 3vh;
+  }
+
+
+  .turnInfo {
+    font-size: 3vh;
     text-align: center;
     height: 100%;
     width: 50%;
@@ -466,16 +531,11 @@ a {
 
   .epidemic {
     border-left: 2px solid black;
-    text-align: center;
     height: 100%;
     width: 50%;
     border-bottom: none;
   }
 
-  /* button {
-    height: 3vh;
-    width: 4vw;
-  } */
   .cityButton {
     height: 5.6vw;
     width: 5.6vw;
@@ -496,17 +556,22 @@ a {
     max-width: 1300px;
   }
 
-  .infectInfo {
+  .turnAndTimer {
     height: 33%;
   }
 
-  .playerHand {
+  .researchBox {
     height: 33%;
-  }
-
-  .playerHandBox {
     border-top: 2px solid black;
   }
+
+  .research {
+
+    width: 5vh;
+    height: 5vh;
+
+  }
+
 
   .trackerContainer {
     visibility: hidden;
@@ -527,15 +592,13 @@ a {
   }
 
   .cureBox {
-    font-size: 1vh;
-    border-left: 1px solid black;
+    font-size: 2.5vh;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-evenly;
-    padding: 0vh 1vh;
-    width: 25%;
+    padding: 2vh 2vh;
+    width: 100%;
     height: 100%;
-    overflow-y: scroll;
   }
 
   .gameBoard {
