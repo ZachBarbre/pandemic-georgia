@@ -228,16 +228,10 @@
       </section>
       <section class="history">
         <ol class="historyList">
-          <li>Game history</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
-          <li>some thing happened</li>
-          <li>another thing happened</li>
+          <li>Game History</li>
+          ${cityStatus.history.split(',').map(item => {
+            return `<li>${item}</li>`;
+          }).join('')}
         </ol>
       </section>
     </section>
