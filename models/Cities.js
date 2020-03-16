@@ -50,15 +50,12 @@ class City {
     //updates database with new infected total.
     try {
       const value = await this.getInfect(city, teamID);
-      //console.log("this is the value:", value);
       const bit = value[Object.keys(value)[0]] - 1;
-      //console.log("the bit is:", bit);
       const post = await db.one(
         `UPDATE game SET ${city}infect = $1 FROM teams WHERE game.id = ${teamID};`,
         [bit]
       );
-      // console.log("The response is", response);
-      // console.log("The post is:", post);
+
       return post;
     } catch (e) {
       return e;
