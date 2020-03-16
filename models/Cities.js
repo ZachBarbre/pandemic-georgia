@@ -55,7 +55,9 @@ class City {
         [bit]
       );
 
-      return history;
+
+      return post;
+
     } catch (e) {
       return e;
     }
@@ -63,7 +65,9 @@ class City {
 
   static async initCity(teamID, playerArray, deck) {
     const response = await db.one(
-      `INSERT INTO game(id, daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1hand, player2hand, player3hand, player4hand, cure1, cure2, cure3, cure4, playerdeck, infectdeck, player1city, player2city, player3city, player4city, infectrate, playeractions, outbreak, playerturn, actions, history) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31) RETURNING id`,
+
+      `INSERT INTO game(id, daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1city, player2city, player3city, player4city, infectrate, playeractions, outbreak, playerturn, actions, history, cure_countdown, death_countdown) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING id`,
+
       [
         teamID,
         0,
@@ -76,16 +80,7 @@ class City {
         0,
         0,
         0,
-        [],
-        [],
-        [],
-        [],
-        false,
-        false,
-        false,
-        false,
-        deck,
-        [],
+
         playerArray[0],
         playerArray[1],
         playerArray[2],
@@ -95,7 +90,10 @@ class City {
         0,
         1,
         4,
-        ""
+        '',
+        0,
+        19
+
       ]
     );
     return response;

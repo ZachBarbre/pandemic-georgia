@@ -241,6 +241,7 @@ button {
   padding: 2vh 2vh;
 }
 
+
 .research {
   display: flex;
   flex-direction: column;
@@ -505,12 +506,13 @@ a {
 
 }
 
+
 @media only screen and (max-width: 750px) {
 
   html {
     font-size: 2vw;
   }
-
+  
   .turnInfo {
     font-size: 3vh;
     text-align: center;

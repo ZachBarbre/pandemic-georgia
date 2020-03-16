@@ -210,6 +210,9 @@
       </div>
       <div class="epidemic">
         <p class="epidemicText">Days left to discover a cure.</p>
+
+        <p class="countdownNum">${cityStatus.death_countdown}</p>
+
       </div>
     </section>
     <section class="trackerAndHistoryContainer">
@@ -239,10 +242,10 @@
     <section class="researchBox">
       <p class="researchText">Research breakthroughs</p>
       <div class="cureBox">
-        <div class="research">1</div>
-        <div class="research">2</div>
-        <div class="research">3</div>
-        <div class="research">4</div>
+        <div class="research">${cityStatus.cure_countdown >= 1 ? 1 : ``}</div>
+        <div class="research">${cityStatus.cure_countdown >= 2 ? 2 : ``}</div>
+        <div class="research">${cityStatus.cure_countdown >= 3 ? 3 : ``}</div>
+        <div class="research">${cityStatus.cure_countdown === 4 ? 4 : ``}</div>
       </div>
     </section>
   </section>
