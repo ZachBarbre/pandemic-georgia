@@ -185,19 +185,19 @@ const infectRandomCity = () => {
   return cities[randomNumber];
 };
 
-const infectCites = async teamId => {
-  const infectRate = await gameFunctions.getInfection(teamId);
-  for (let i = 0; i < infectRate.infectrate; i++) {
-    const cityToInfect = infectRandomCity();
-    console.log("first city", cityToInfect);
-    const infect = await cityToInfect.postInfect(cityToInfect, teamId);
-    if (!infect) {
-      cityToInfect.connectedCities.forEach(async connectedCity => {
-        console.log("outbreak! Infecting: ", connectedCity);
-        await eval(connectedCity).postInfect(eval(connectedCity), teamId);
-      });
-    }
+const infectCites = async (cityToInfect, teamId) => {
+  let citiesInfected = [cityToInfect];
+  console.log("first city", cityToInfect);
+  const infect = await cityToInfect.postInfect(cityToInfect, teamId);
+  if (!infect) {
+    cityToInfect.connectedCities.forEach(connectedCity => {
+      console.log("outbreak! Infecting: ", connectedCity);
+      if (!citiesInfected.includes(eval(connectedCity))) {
+        citiesInfected.push(eval(connectedCity));
+      }
+    });
   }
+  return citiesInfected;
 };
 
 // strting point
@@ -249,24 +249,7 @@ router.post("/", async (req, res) => {
   }
   const playerArray = createPlayerArray(players);
 
-  // const newGame = await cityModel.initCity(userData.user_id, playerArray);
-
-  //deck initialization: creation, adding epidemics, shuffling and pushing to DB.
-  //leaving console logs in there to see th steps in action if you like.
-
-  const deckInit = await new deckModel().buildDeck();
-  //console.log("this is the new deck:", deckInit);
-  const addingEpidemics = await new deckModel().addEpidemics(deckInit);
-  //console.log("deck with epidemics in it:", addingEpidemics);
-  const completedDeck = await new deckModel().shuffleTwo(addingEpidemics);
-  //console.log("this is the complete and shuffled player deck:", completedDeck);
-  //const postDeck = await deckModel.postPlayerDeck(completedDeck, userData.user_id);
-  const newGame = await cityModel.initCity(
-    userData.user_id,
-    playerArray,
-    completedDeck
-  );
-  //console.log("Created Game with id:", newGame);
+  const newGame = await cityModel.initCity(userData.user_id, playerArray);
 
   res.status(200).redirect("/game/play");
 });
@@ -322,8 +305,11 @@ router.post(
       );
     }
     const action = await playerModel.removeAction(userData.user_id);
+    console.log("actions", action);
     if (action.actions === 0) {
-      infectCites(userData.user_id);
+      const cityToInfect = infectRandomCity();
+      const infectRate = await gameFunctions.getInfection(userData.user_id);
+      const citesInfected = await infectCites(cityToInfect, userData.user_id);
       const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
     }
 
