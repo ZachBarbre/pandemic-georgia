@@ -485,6 +485,13 @@ a {
   color: purple;
 }
 
+.endGame {
+  font-family: "capture_itregular";
+  font-size: 6vh;
+  text-align: center;
+  margin: 5vh auto;
+}
+
 @media only screen and (max-width: 1500px) {
 
   /* .turnInfo {
