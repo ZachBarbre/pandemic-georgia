@@ -1,7 +1,7 @@
 const db = require("./con");
 
 class playerCard {
-  ructor(color, city, number) {
+  constructor(color, city, number) {
     this.color = color;
     this.city = city;
     this.number = number;
@@ -72,6 +72,24 @@ class PlayerDeck {
       }
     return array;
   }
+  //borrowed this shuffler from the internet. the one above wasn't returning a new shuffle?
+  //perhaps someone could double check that. the shuffleTwo does work.
+
+  shuffleTwo(arr) {
+    let cards = [];
+    arr.forEach(card => {
+      cards.push(card);
+    });
+
+    let random = () => {
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+    }
+    random();
+    return cards;
+  }
 
   addEpidemics(playerDeck) {
     const cardEpidemic1 = new playerCard("green", "Epidemic", 21);
@@ -97,19 +115,21 @@ class PlayerDeck {
   }
 
   //post prototype.
-  async postPlayerDeck(deck, teamID) {
-    let posting = "1";
+  static async postPlayerDeck(deck, teamID) {
+    let posting = '1';
     const card = Object.keys(deck);
 
     console.log(" The card array is: ", card);
     try {
       const response = await db.one(
-        `UPDATE game SET playerdeck = ${posting} WHERE game.id = 1;`
+        `UPDATE game SET playerdeck = ${card} WHERE game.id = 6;`
       );
+      return response;
     } catch (e) {
       return e;
     }
   }
+
   static async getPlayerDeck(teamID) {
     try {
       const response = await db.one(
