@@ -10,6 +10,8 @@ const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
 const gameRouter = require("./routes/game");
+const victoryRouter = require("./routes/victory");
+const defeateRouter = require("./routes/defeat");
 
 const app = express();
 
@@ -41,5 +43,6 @@ app.use(
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
 app.use("/game", gameRouter);
-
+app.use("/victory", victoryRouter);
+app.use("/defeat", defeateRouter);
 module.exports = app;
