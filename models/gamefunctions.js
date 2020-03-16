@@ -30,10 +30,10 @@ class Functions {
     );
   }
 
-  async getInfection(teamsID) {
+  static async getInfection(teamsID) {
     try {
       const response = await db.one(
-        `SELECT game.infectionrate FROM teams WHERE game.id = ${teamsID};`
+        `SELECT game.infectrate FROM game WHERE game.id = ${teamsID};`
       );
       return response;
     } catch (e) {
@@ -180,6 +180,58 @@ class Functions {
         [increaseValue, teamID]
       );
       return update;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async getWins(teamID) {
+    try {
+      const wins = await db.one(
+        `SELECT teams.win FROM teams WHERE teams.id = $1`,
+        [teamID]
+      );
+      return wins.win;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async getlosses(teamID) {
+    try {
+      const loss = await db.one(
+        `SELECT teams.loss FROM teams WHERE teams.id = $1`,
+        [teamID]
+      );
+      return loss.loss;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async updateWin(teamID) {
+    try {
+      let oldwins = await this.getWins(teamID);
+      oldwins += 1;
+      const newWins = await db.one(
+        `UPDATE teams SET win = $1 WHERE teams.id = $2`,
+        [oldwins, teamID]
+      );
+      return newWins;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async updatelosses(teamID) {
+    try {
+      let oldlosses = await this.getlosses(teamID);
+      oldlosses += 1;
+      const newlosses = await db.one(
+        `UPDATE teams SET loss = $1 WHERE teams.id = $2`,
+        [oldlosses, teamID]
+      );
+      return newlosses;
     } catch (e) {
       return e;
     }
