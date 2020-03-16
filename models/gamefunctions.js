@@ -114,6 +114,58 @@ class Functions {
       return false;
     }
   }
+
+  async getCureCountdown(teamID) {
+    try {
+      const response = await db.one(
+        `SELECT cure_countdown FROM game WHERE game.id = $1`,
+        [teamID]
+      );
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async getDeathCountdown(teamID) {
+    try {
+      const response = await db.one(
+        `SELECT death_countdown FROM game WHERE game.id = $1`,
+        [teamID]
+      );
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async increaseCureCountdown(teamID) {
+    try {
+      const currentCurePercent = await this.getCureCountdown(teamID);
+      const cureProperty = currentCurePercent.cure_countdown;
+      const increasedNumber = Math.floor(Math.random() * 10);
+      const increaseCureCountdown = increasedNumber + cureProperty;
+      const increasedFunction = await this.postCureProperty(
+        teamID,
+        increaseCureCountdown
+      );
+      return increasedFunction;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async postCureProperty(teamID, increaseValue) {
+    try {
+      const update = await db.one(
+        `UPDATE game SET cure_countdown = $1 WHERE id = $2;`,
+        [increaseValue, teamID]
+      );
+      return update;
+    } catch (e) {
+      return e;
+    }
+  }
 }
 
 module.exports = Functions;
