@@ -218,21 +218,7 @@ router.post("/", async (req, res) => {
   }
   const playerArray = createPlayerArray(players);
 
-  // const newGame = await cityModel.initCity(userData.user_id, playerArray);
-
-
-  //deck initialization: creation, adding epidemics, shuffling and pushing to DB.
-  //leaving console logs in there to see th steps in action if you like.
-
-  const deckInit = await new deckModel().buildDeck();
-  //console.log("this is the new deck:", deckInit);
-  const addingEpidemics = await new deckModel().addEpidemics(deckInit);
-  //console.log("deck with epidemics in it:", addingEpidemics);
-  const completedDeck = await new deckModel().shuffleTwo(addingEpidemics);
-  //console.log("this is the complete and shuffled player deck:", completedDeck);
-  //const postDeck = await deckModel.postPlayerDeck(completedDeck, userData.user_id);
-  const newGame = await cityModel.initCity(userData.user_id, playerArray, completedDeck);
-  //console.log("Created Game with id:", newGame);
+  const newGame = await cityModel.initCity(userData.user_id, playerArray);
 
   res.status(200).redirect("/game/play");
 });
