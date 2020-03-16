@@ -170,14 +170,12 @@ const cureCity = async (cityInstance, lowerCaseName, userData, cityNum) => {
 
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
-
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
   const playerDeck = await deckModel.getPlayerDeck(req.session.user_id);
   //console.log("the game deck is:", playerDeck);
   console.log(cityStatus);
   // console.log(playerLocations);
   // console.log(req.session);
-
 
   res.render("template", {
     locals: {
@@ -283,9 +281,20 @@ router.post(
           userData,
           playerCityNumber
         );
+        const random = Math.floor(Math.random() * 10) + 1
+        if (random === 2) {
+          const researchChance = await gameFunctions.increaseCureCountdown(userData.user_id);
+          const recordResearch = await playerModel.recordResearch(playerTurn, userData.user_id);
+        }
         const recordCure = await playerModel.recordCure(playerTurn, clickedCity.name, userData.user_id);
       }
+
+      const game = await cityModel.getGame(userData.user_id);
+      if (game.actions === 1) {
+        const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
+      }
       const action = await playerModel.removeAction(userData.user_id);
+
       next();
     },
     (req, res) => {
