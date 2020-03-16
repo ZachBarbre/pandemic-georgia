@@ -55,7 +55,6 @@ class City {
         [bit]
       );
       return post;
-
     } catch (e) {
       return e;
     }
@@ -85,13 +84,9 @@ class City {
         0,
         1,
         4,
-<<<<<<< HEAD
-        ""
-=======
-        '',
+        "",
         0,
         19
->>>>>>> ab4e72452637b9f6ae92af1b70da4005f67a6595
       ]
     );
     return response;
