@@ -203,7 +203,6 @@ const infectCites = async teamId => {
 // strting point
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
-
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
   const playerDeck = await deckModel.getPlayerDeck(req.session.user_id);
   //console.log("the game deck is:", playerDeck);
@@ -325,6 +324,7 @@ router.post(
     const action = await playerModel.removeAction(userData.user_id);
     if (action.actions === 0) {
       infectCites(userData.user_id);
+      const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
     }
 
     next();
