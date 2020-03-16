@@ -33,6 +33,15 @@ class Player {
     }
   }
 
+  static async recordResearch(player, teamID) {
+    try {
+      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`, [`Player ${player} uncovered a breakthrough in research!,`, teamID]);
+      return record;
+    } catch (e) {
+      return e;
+    }
+  }
+
   static async recordCure(player, city, teamID) {
     try {
       const record = await db.one(
