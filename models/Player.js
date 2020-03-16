@@ -20,7 +20,13 @@ class Player {
 
   static async recordMove(player, currentCity, destination, teamID) {
     try {
-      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`, [`Player ${player} moved from ${currentCity} to ${destination},`, teamID]);
+      const record = await db.one(
+        `UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`,
+        [
+          `Player ${player} moved from ${currentCity} to ${destination},`,
+          teamID
+        ]
+      );
       return record;
     } catch (e) {
       return e;
@@ -38,8 +44,10 @@ class Player {
 
   static async recordCure(player, city, teamID) {
     try {
-      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) FROM teams WHERE game.id = $2;`,
-        [`Player ${player} cured ${city} for one,`, teamID]);
+      const record = await db.one(
+        `UPDATE game SET history = CONCAT(history, $1) FROM teams WHERE game.id = $2;`,
+        [`Player ${player} cured ${city} for one,`, teamID]
+      );
       return record;
     } catch (e) {
       return e;
@@ -84,37 +92,50 @@ class Player {
   }
   static async removeAction(teamID) {
     try {
-      const response = await db.one(`UPDATE game SET actions = actions - 1 FROM teams WHERE game.id = ${teamID} RETURNING *;`);
+      const response = await db.one(
+        `UPDATE game SET actions = actions - 1 FROM teams WHERE game.id = ${teamID} RETURNING *;`
+      );
       console.log("response to removeAction is:", response);
       switch (response.playerturn) {
         case 1:
           if (response.actions <= 0) {
-            const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
+            const nextPlayer = await db.one(
+              `UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `
+            );
             break;
           }
-          case 2:
-            if (response.actions <= 0 && response.player3city === null) {
-              console.log('hi 3 didnt work');
-              const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
-              break;
-            } else if (response.actions <= 0) {
-              const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
-              break;
-            }
-            case 3:
-              if (response.actions <= 0 && response.player4city === null) {
-                const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
-                break;
-              } else if (response.actions <= 0) {
-                const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
-                break;
-              }
-              case 4:
-                if (response.actions <= 0) {
-                  const nextPlayer = await db.one(`UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `);
-                  break;
-                }
-
+        case 2:
+          if (response.actions <= 0 && response.player3city === null) {
+            console.log("hi 3 didnt work");
+            const nextPlayer = await db.one(
+              `UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `
+            );
+            break;
+          } else if (response.actions <= 0) {
+            const nextPlayer = await db.one(
+              `UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `
+            );
+            break;
+          }
+        case 3:
+          if (response.actions <= 0 && response.player4city === null) {
+            const nextPlayer = await db.one(
+              `UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `
+            );
+            break;
+          } else if (response.actions <= 0) {
+            const nextPlayer = await db.one(
+              `UPDATE game SET actions = 4, playerturn = playerturn + 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `
+            );
+            break;
+          }
+        case 4:
+          if (response.actions <= 0) {
+            const nextPlayer = await db.one(
+              `UPDATE game SET actions = 4, playerturn = 1 FROM teams WHERE game.id = ${teamID} RETURNING actions, playerturn; `
+            );
+            break;
+          }
       }
 
       return response;
@@ -129,16 +150,6 @@ class Player {
         `SELECT ${playerNumber}city FROM game WHERE game.id = ${teamID};`
       );
       return location;
-    } catch (e) {
-      return e;
-    }
-  }
-
-  async getPlayerHand(teamID) {
-    try {
-      const response = await db.one(
-        `SELECT playerdeck FROM game WHERE game.id = ${teamID};`
-      );
     } catch (e) {
       return e;
     }

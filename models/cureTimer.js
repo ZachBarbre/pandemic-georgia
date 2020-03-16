@@ -1,0 +1,1 @@
+let cureTime = 19;
