@@ -35,7 +35,10 @@ class Player {
 
   static async recordResearch(player, teamID) {
     try {
-      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`, [`Player ${player} uncovered a breakthrough in research!,`, teamID]);
+      const record = await db.one(
+        `UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`,
+        [`Player ${player} uncovered a breakthrough in research!,`, teamID]
+      );
       return record;
     } catch (e) {
       return e;
@@ -150,16 +153,6 @@ class Player {
         `SELECT ${playerNumber}city FROM game WHERE game.id = ${teamID};`
       );
       return location;
-    } catch (e) {
-      return e;
-    }
-  }
-
-  async getPlayerHand(teamID) {
-    try {
-      const response = await db.one(
-        `SELECT playerdeck FROM game WHERE game.id = ${teamID};`
-      );
     } catch (e) {
       return e;
     }

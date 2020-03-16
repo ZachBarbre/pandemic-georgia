@@ -3,7 +3,7 @@ const router = express.Router();
 const teamModel = require("../models/teamModel");
 const bcrypt = require("bcryptjs");
 
-router.get("/", async function (req, res, next) {
+router.get("/", async function(req, res, next) {
   res.render("template", {
     locals: {
       title: "Play Pandemic",
@@ -15,7 +15,7 @@ router.get("/", async function (req, res, next) {
   });
 });
 
-router.get("/signup", async function (req, res, next) {
+router.get("/signup", async function(req, res, next) {
   res.render("template", {
     locals: {
       title: "Signup",
@@ -28,11 +28,7 @@ router.get("/signup", async function (req, res, next) {
 });
 
 router.post("/signup", async (req, res, next) => {
-  const {
-    teamname,
-    email,
-    password
-  } = req.body;
+  const { teamname, email, password } = req.body;
 
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
@@ -43,10 +39,7 @@ router.post("/signup", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const {
-    email,
-    password
-  } = req.body;
+  const { email, password } = req.body;
   console.log(req.body);
   const team = new teamModel(null, null, password, null, null, email);
   const loginResponse = await team.loginTeam();
