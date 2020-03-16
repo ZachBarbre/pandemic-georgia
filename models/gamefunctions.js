@@ -30,10 +30,10 @@ class Functions {
     );
   }
 
-  async getInfection(teamsID) {
+  static async getInfection(teamsID) {
     try {
       const response = await db.one(
-        `SELECT game.infectionrate FROM teams WHERE game.id = ${teamsID};`
+        `SELECT game.infectrate FROM game WHERE game.id = ${teamsID};`
       );
       return response;
     } catch (e) {

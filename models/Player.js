@@ -33,10 +33,12 @@ class Player {
     }
   }
 
-
   static async recordResearch(player, teamID) {
     try {
-      const record = await db.one(`UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`, [`Player ${player} uncovered a breakthrough in research!,`, teamID]);
+      const record = await db.one(
+        `UPDATE game SET history = CONCAT(history, $1) WHERE game.id = $2;`,
+        [`Player ${player} uncovered a breakthrough in research!,`, teamID]
+      );
       return record;
     } catch (e) {
       return e;
@@ -94,9 +96,9 @@ class Player {
   static async removeAction(teamID) {
     try {
       const response = await db.one(
-        `UPDATE game SET actions = actions - 1 FROM teams WHERE game.id = ${teamID} RETURNING *;`
+        `UPDATE game SET actions = actions - 1 FROM teams WHERE game.id = ${teamID} RETURNING game.*;`
       );
-      console.log("response to removeAction is:", response);
+      // console.log("response to removeAction is:", response);
       switch (response.playerturn) {
         case 1:
           if (response.actions <= 0) {
