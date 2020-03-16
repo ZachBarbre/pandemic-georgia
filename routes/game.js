@@ -289,6 +289,26 @@ router.post(
           clickedCity.name,
           userData.user_id
         );
+        const random = Math.floor(Math.random() * 10) + 1;
+        if (random === 2) {
+          const researchChance = await gameFunctions.increaseCureCountdown(
+            userData.user_id
+          );
+          const recordResearch = await playerModel.recordResearch(
+            playerTurn,
+            userData.user_id
+          );
+        }
+        const recordCure = await playerModel.recordCure(
+          playerTurn,
+          clickedCity.name,
+          userData.user_id
+        );
+      }
+
+      const game = await cityModel.getGame(userData.user_id);
+      if (game.actions === 1) {
+        const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
       }
     }
     if (playerCity === clickedCity) {

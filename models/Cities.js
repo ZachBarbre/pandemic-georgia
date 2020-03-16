@@ -63,7 +63,7 @@ class City {
     }
   }
 
-  static async initCity(teamID, playerArray, deck) {
+  static async initCity(teamID, playerArray) {
     const response = await db.one(
       `INSERT INTO game(id, daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1city, player2city, player3city, player4city, infectrate, playeractions, outbreak, playerturn, actions, history, cure_countdown, death_countdown) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING id`,
       [
