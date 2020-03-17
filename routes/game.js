@@ -180,39 +180,79 @@ const cureCity = async (cityInstance, lowerCaseName, userData, cityNum) => {
   }
 };
 
+const infect = async (cityToInfect, teamId) => {
+  let cities = [
+    Dalton,
+    Blairsville,
+    Atlanta,
+    Athens,
+    Augusta,
+    Columbus,
+    Macon,
+    Savannah,
+    Albany,
+    Valdosta
+  ];
+  const responseCites = await cityModel.getAllCityInfections(teamId);
+  const outbreakResponse = await gameFunctions.getOutbreak(teamId);
+  let outbreakCount = outbreakResponse.outbreak;
+  cities.forEach((city, i) => {
+    city.infectedCounter = Object.values(responseCites)[i];
+  });
+
+  let alreadyInfected = [];
+  let citiesToInfect = [cityToInfect];
+  while (true) {
+    cities.forEach(city => {
+      if (citiesToInfect.includes(city)) {
+        if (city.infectedCounter === 3 && !alreadyInfected.includes(city)) {
+          alreadyInfected.push(city);
+          newCities = city.connectedCities.map(connected => eval(connected));
+          citiesToInfect = citiesToInfect.concat(newCities);
+          outbreakCount++;
+        } else if (!alreadyInfected.includes(city)) {
+          city.infectedCounter++;
+          alreadyInfected.push(city);
+        }
+      }
+    });
+    citiesToInfect.shift();
+    if (citiesToInfect.length === 0) {
+      break;
+    }
+  }
+  const updateOutbreak = await gameFunctions.setOutbreak(outbreakCount, teamId);
+  const updateCities = cities.map(city => city.infectedCounter);
+  const postInfectedCities = await cityModel.postAllCityInfections(
+    teamId,
+    updateCities
+  );
+};
+
 const infectRandomCity = () => {
   const randomNumber = Math.floor(Math.random() * 10);
   return cities[randomNumber];
 };
 
-const infectCites = async (cityToInfect, teamId) => {
-  let citiesInfected = [cityToInfect];
-  console.log("first city", cityToInfect);
-  const infect = await cityToInfect.postInfect(cityToInfect, teamId);
-  if (!infect) {
-    cityToInfect.connectedCities.forEach(connectedCity => {
-      console.log("outbreak! Infecting: ", connectedCity);
-      if (!citiesInfected.includes(eval(connectedCity))) {
-        citiesInfected.push(eval(connectedCity));
-      }
-    });
+const infectCites = async teamId => {
+  const infectRate = await gameFunctions.getInfection(teamId);
+  for (let i = 0; i < infectRate.infectrate; i++) {
+    let cityToInfect = infectRandomCity();
+    let infected = infect(cityToInfect, teamId);
   }
-  return citiesInfected;
 };
 
 // strting point
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
-  const playerDeck = await deckModel.getPlayerDeck(req.session.user_id);
 
   res.render("template", {
     locals: {
       title: "Pandemic Georgia",
       userData: req.session,
       playerLocations: Object.values(playerLocations),
-      cityStatus: cityStatus,
-      playerDeck: playerDeck
+      cityStatus: cityStatus
     },
     partials: {
       partial: "game-partial"
@@ -239,9 +279,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const {
-    players
-  } = req.body;
+  const { players } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
@@ -256,95 +294,92 @@ router.post("/", async (req, res) => {
 router.post(
   "/play/:city?",
   async (req, res, next) => {
-      const userData = req.session;
-      const game = await cityModel.getGame(userData.user_id);
-      if (game.cure_countdown >= 4) {
-        res.status(200).redirect("/victory");
-      }
+    const userData = req.session;
+    const game = await cityModel.getGame(userData.user_id);
+    if (game.cure_countdown >= 4) {
+      res.status(200).redirect("/victory");
+    }
 
-      if (game.death_countdown === 0) {
-        res.status(200).redirect("/defeat");
-      }
+    if (game.death_countdown === 0) {
+      res.status(200).redirect("/defeat");
+    }
 
-      let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
-      playerTurn = playerTurn.playerturn;
-      const city = req.params.city;
-      const clickedCity = setCurrentCity(city);
-      const playerCityRespose = await playerModel.getPlayerCity(
-        `player${playerTurn}`,
-        userData.user_id
-      );
-      const playerCityNumber = Object.values(playerCityRespose)[0];
-      const player = new playerModel(
-        `player${playerTurn}`,
-        playerCityNumber,
-        null
-      );
-      const playerCity = setPlayerCity(playerCityNumber);
+    let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
+    playerTurn = playerTurn.playerturn;
+    const city = req.params.city;
+    const clickedCity = setCurrentCity(city);
+    const playerCityRespose = await playerModel.getPlayerCity(
+      `player${playerTurn}`,
+      userData.user_id
+    );
+    const playerCityNumber = Object.values(playerCityRespose)[0];
+    const player = new playerModel(
+      `player${playerTurn}`,
+      playerCityNumber,
+      null
+    );
+    const playerCity = setPlayerCity(playerCityNumber);
 
-      if (playerCity !== clickedCity) {
-        const canMove = player.moveCities(playerCity, clickedCity);
-        if (canMove) {
-          const movePlayer = await player.updatePlayerCity(
-            player,
-            clickedCity,
-            userData.user_id
-          );
-          const recordMove = await playerModel.recordMove(
-            playerTurn,
-            playerCity.name,
-            clickedCity.name,
-            userData.user_id
-          );
-          const random = Math.floor(Math.random() * 10) + 1;
-          if (random === 2) {
-            const researchChance = await gameFunctions.increaseCureCountdown(
-              userData.user_id
-            );
-            const recordResearch = await playerModel.recordResearch(
-              playerTurn,
-              userData.user_id
-            );
-          }
-          const recordCure = await playerModel.recordCure(
-            playerTurn,
-            clickedCity.name,
-            userData.user_id
-          );
-        }
-
-        if (game.actions === 1) {
-          const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
-        }
-      }
-      if (playerCity === clickedCity) {
-        const cure = await cureCity(
+    if (playerCity !== clickedCity) {
+      const canMove = player.moveCities(playerCity, clickedCity);
+      if (canMove) {
+        const movePlayer = await player.updatePlayerCity(
+          player,
           clickedCity,
-          city,
-          userData,
-          playerCityNumber
+          userData.user_id
         );
+        const recordMove = await playerModel.recordMove(
+          playerTurn,
+          playerCity.name,
+          clickedCity.name,
+          userData.user_id
+        );
+        const random = Math.floor(Math.random() * 10) + 1;
+        if (random === 2) {
+          const researchChance = await gameFunctions.increaseCureCountdown(
+            userData.user_id
+          );
+          const recordResearch = await playerModel.recordResearch(
+            playerTurn,
+            userData.user_id
+          );
+        }
         const recordCure = await playerModel.recordCure(
           playerTurn,
           clickedCity.name,
           userData.user_id
         );
       }
-      const action = await playerModel.removeAction(userData.user_id);
-      console.log("actions", action);
-      if (action.actions === 0) {
-        const cityToInfect = infectRandomCity();
-        const infectRate = await gameFunctions.getInfection(userData.user_id);
-        const citesInfected = await infectCites(cityToInfect, userData.user_id);
+
+      if (game.actions === 1) {
         const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
       }
-
-
-      next();
-    },
-    (req, res) => {
-      res.status(200).redirect("back");
     }
+    if (playerCity === clickedCity) {
+      const cure = await cureCity(
+        clickedCity,
+        city,
+        userData,
+        playerCityNumber
+      );
+      const recordCure = await playerModel.recordCure(
+        playerTurn,
+        clickedCity.name,
+        userData.user_id
+      );
+    }
+    const action = await playerModel.removeAction(userData.user_id);
+    console.log("actions", action);
+    if (action.actions === 0) {
+      const infect = await infectCites(userData.user_id);
+      const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
+    }
+
+    next();
+  },
+  (req, res) => {
+    res.status(200).redirect("back");
+  }
 );
 
 module.exports = router;
