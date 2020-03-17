@@ -41,7 +41,6 @@ class City {
       const response = await db.one(
         `SELECT game.${city}infect FROM game WHERE game.id = ${teamID};`
       );
-      console.log("THe response is", response);
       return response;
     } catch (e) {
       return e;
@@ -65,7 +64,6 @@ class City {
 
   static async initCity(teamID, playerArray, deck) {
     const response = await db.one(
-
       `INSERT INTO game(id, daltoninfect, blairsvilleinfect, atlantainfect, athensinfect, augustainfect, columbusinfect, maconinfect, savannahinfect, albanyinfect, valdostainfect, player1city, player2city, player3city, player4city, infectrate, playeractions, outbreak, playerturn, actions, history, cure_countdown, death_countdown) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING id`,
 
       [
@@ -93,7 +91,6 @@ class City {
         "",
         0,
         19
-
       ]
     );
     return response;
@@ -112,7 +109,49 @@ class City {
   static async gameExists(teamID) {
     try {
       const response = await db.one(
-        `SELECT EXISTS(SELECT id FROM game WHERE id=${teamID});;`
+        `SELECT EXISTS(SELECT id FROM game WHERE id=${teamID});`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+  static async getAllCityInfections(teamID) {
+    try {
+      const response = await db.one(
+        `SELECT  game.daltoninfect, 
+        game.blairsvilleinfect, 
+        game.atlantainfect, 
+        game.athensinfect, 
+        game.augustainfect, 
+        game.columbusinfect, 
+        game.maconinfect, 
+        game.savannahinfect, 
+        game.albanyinfect, 
+        game.valdostainfect FROM game WHERE id=${teamID};`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
+  static async postAllCityInfections(teamID, cityArray) {
+    try {
+      const response = await db.one(
+        `UPDATE game SET daltoninfect = ${cityArray[0]}, 
+        blairsvilleinfect = ${cityArray[1]}, 
+        atlantainfect = ${cityArray[2]}, 
+        athensinfect = ${cityArray[3]}, 
+        augustainfect = ${cityArray[4]}, 
+        columbusinfect = ${cityArray[5]}, 
+        maconinfect = ${cityArray[6]}, 
+        savannahinfect = ${cityArray[7]}, 
+        albanyinfect = ${cityArray[8]}, 
+        valdostainfect = ${cityArray[9]}
+        WHERE id=${teamID} RETURNING id;`
       );
       return response;
     } catch (error) {

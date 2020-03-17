@@ -180,43 +180,72 @@ const cureCity = async (cityInstance, lowerCaseName, userData, cityNum) => {
   }
 };
 
+const infect = async (cityToInfect, teamId) => {
+  let cities = [
+    Dalton,
+    Blairsville,
+    Atlanta,
+    Athens,
+    Augusta,
+    Columbus,
+    Macon,
+    Savannah,
+    Albany,
+    Valdosta
+  ];
+  const responseCites = await cityModel.getAllCityInfections(teamId);
+  cities.forEach((city, i) => {
+    city.infectedCounter = Object.values(responseCites)[i];
+  });
+
+  let alreadyInfected = [];
+  let citiesToInfect = [cityToInfect];
+  while (true) {
+    cities.forEach(city => {
+      if (citiesToInfect.includes(city)) {
+        if (city.infectedCounter === 3 && !alreadyInfected.includes(city)) {
+          alreadyInfected.push(city);
+          newCities = city.connectedCities.map(connected => eval(connected));
+          citiesToInfect = citiesToInfect.concat(newCities);
+        } else if (!alreadyInfected.includes(city)) {
+          city.infectedCounter++;
+          alreadyInfected.push(city);
+        }
+      }
+    });
+    citiesToInfect.shift();
+    if (citiesToInfect.length === 0) {
+      break;
+    }
+  }
+  const updateCities = cities.map(city => city.infectedCounter);
+  const post = await cityModel.postAllCityInfections(teamId, updateCities);
+};
+
 const infectRandomCity = () => {
   const randomNumber = Math.floor(Math.random() * 10);
   return cities[randomNumber];
 };
 
-const infectCites = async (cityToInfect, teamId) => {
-  let citiesInfected = [cityToInfect];
-  console.log("first city", cityToInfect);
-  const infect = await cityToInfect.postInfect(cityToInfect, teamId);
-  if (!infect) {
-    cityToInfect.connectedCities.forEach(connectedCity => {
-      console.log("outbreak! Infecting: ", connectedCity);
-      if (!citiesInfected.includes(eval(connectedCity))) {
-        citiesInfected.push(eval(connectedCity));
-      }
-    });
+const infectCites = async teamId => {
+  const infectRate = await gameFunctions.getInfection(teamId);
+  for (let i = 0; i < infectRate.infectrate; i++) {
+    let cityToInfect = infectRandomCity();
+    let infected = infect(cityToInfect, teamId);
   }
-  return citiesInfected;
 };
 
 // strting point
 router.get("/play", async (req, res, next) => {
   const cityStatus = await cityModel.getGame(req.session.user_id);
   const playerLocations = await playerModel.getPlayerCount(req.session.user_id);
-  const playerDeck = await deckModel.getPlayerDeck(req.session.user_id);
-  //console.log("the game deck is:", playerDeck);
-  // console.log(cityStatus);
-  // console.log(playerLocations);
-  // console.log(req.session);
 
   res.render("template", {
     locals: {
       title: "Pandemic Georgia",
       userData: req.session,
       playerLocations: Object.values(playerLocations),
-      cityStatus: cityStatus,
-      playerDeck: playerDeck
+      cityStatus: cityStatus
     },
     partials: {
       partial: "game-partial"
@@ -325,12 +354,9 @@ router.post(
       );
     }
     const action = await playerModel.removeAction(userData.user_id);
-    console.log("actions", action);
     if (action.actions === 0) {
-      const cityToInfect = infectRandomCity();
-      const infectRate = await gameFunctions.getInfection(userData.user_id);
-      const citesInfected = await infectCites(cityToInfect, userData.user_id);
       const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
+      const infect = await infectCites(userData.user_id);
     }
 
     next();
