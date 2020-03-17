@@ -64,7 +64,9 @@ class City {
 
   static async scoreExists(teamID) {
     try {
-      const response = await db.one(`SELECT EXISTS(SELECT id FROM score WHERE id=${teamID});`);
+      const response = await db.one(
+        `SELECT EXISTS(SELECT id FROM score WHERE id=${teamID});`
+      );
       return response;
     } catch (e) {
       return e;
@@ -73,7 +75,10 @@ class City {
 
   static async createScore(teamID) {
     try {
-      const response = await db.one(`INSERT INTO score(id, win, loss) VALUES ($1, $2, $3) RETURNING id;`, [teamID, 0, 0]);
+      const response = await db.one(
+        `INSERT INTO score(id, win, loss) VALUES ($1, $2, $3) RETURNING id;`,
+        [teamID, 0, 0]
+      );
       return response;
     } catch (error) {
       return error;
@@ -100,7 +105,7 @@ class City {
         playerArray[1],
         playerArray[2],
         playerArray[3],
-        1,
+        2,
         4,
         0,
         1,
@@ -113,8 +118,6 @@ class City {
     return response;
   }
 
-
-
   static async deleteGame(teamID) {
     try {
       const response = await db.one(`DELETE FROM game WHERE id = ${teamID};`);
@@ -124,7 +127,6 @@ class City {
       return error;
     }
   }
-
 
   static async gameExists(teamID) {
     try {
