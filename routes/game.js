@@ -288,6 +288,15 @@ router.post(
   "/play/:city?",
   async (req, res, next) => {
     const userData = req.session;
+    const game = await cityModel.getGame(userData.user_id);
+    if (game.cure_countdown >= 4) {
+      res.status(200).redirect("/victory");
+    }
+
+    if (game.death_countdown === 0) {
+      res.status(200).redirect("/defeat");
+    }
+
     let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
     playerTurn = playerTurn.playerturn;
     const city = req.params.city;
@@ -335,7 +344,6 @@ router.post(
         );
       }
 
-      const game = await cityModel.getGame(userData.user_id);
       if (game.actions === 1) {
         const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
       }
@@ -354,9 +362,10 @@ router.post(
       );
     }
     const action = await playerModel.removeAction(userData.user_id);
+    console.log("actions", action);
     if (action.actions === 0) {
-      const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
       const infect = await infectCites(userData.user_id);
+      const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
     }
 
     next();
