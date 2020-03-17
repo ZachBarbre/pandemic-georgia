@@ -194,8 +194,8 @@ const infect = async (cityToInfect, teamId) => {
     Valdosta
   ];
   const responseCites = await cityModel.getAllCityInfections(teamId);
-  const outbreakResponse = await gameFunctions.getOutbreak(teamId);
-  let outbreakCount = outbreakResponse.outbreak;
+  let outbreakCount = await gameFunctions.getOutbreak(teamId);
+  console.log(outbreakCount);
   cities.forEach((city, i) => {
     city.infectedCounter = Object.values(responseCites)[i];
   });
@@ -221,6 +221,7 @@ const infect = async (cityToInfect, teamId) => {
       break;
     }
   }
+
   const updateOutbreak = await gameFunctions.setOutbreak(outbreakCount, teamId);
   const updateCities = cities.map(city => city.infectedCounter);
   const postInfectedCities = await cityModel.postAllCityInfections(
@@ -343,11 +344,11 @@ router.post(
             userData.user_id
           );
         }
+
         if (game.actions === 1) {
           const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
         }
       }
-
       if (playerCity === clickedCity) {
         const cure = await cureCity(
           clickedCity,
@@ -361,7 +362,7 @@ router.post(
           userData.user_id
         );
         const random = Math.floor(Math.random() * 10) + 1;
-        if (random === 8) {
+        if (random === 2) {
           const researchChance = await gameFunctions.increaseCureCountdown(
             userData.user_id
           );
@@ -382,7 +383,7 @@ router.post(
       next();
     },
     (req, res) => {
-      res.status(200).redirect("back");
+      res.status(200).redirect("/game/play");
     }
 );
 
