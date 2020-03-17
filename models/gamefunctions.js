@@ -25,9 +25,9 @@ class Functions {
     }
   }
 
-  async setOutbreak(number, teamsID) {
+  static async setOutbreak(number, teamsID) {
     const value = await db.one(
-      `UPDATE game.outbreak SET outbreak = ${number} FROM teams WHERE game.id = ${teamsID};`
+      `UPDATE game SET outbreak = ${number} WHERE game.id = ${teamsID} RETURNING id;;`
     );
   }
 
@@ -191,10 +191,9 @@ class Functions {
 
   async getWins(teamID) {
     try {
-      const wins = await db.one(
-        `SELECT win FROM score WHERE id = $1`,
-        [teamID]
-      );
+      const wins = await db.one(`SELECT win FROM score WHERE id = $1`, [
+        teamID
+      ]);
       return wins.win;
     } catch (e) {
       return e;
