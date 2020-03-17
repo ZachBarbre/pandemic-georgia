@@ -262,11 +262,13 @@ router.post(
       const game = await cityModel.getGame(userData.user_id);
       if (game.cure_countdown >= 4) {
         const win = await gameFunctions.updateWin(userData.user_id);
+        const deleteOldGame = await cityModel.deleteGame(userData.user_id);
         res.status(200).redirect("/victory");
       }
 
       if (game.death_countdown === 0) {
         const loss = await gameFunctions.updatelosses(userData.user_id);
+        const deleteOldGame = await cityModel.deleteGame(userData.user_id);
         res.status(200).redirect("/defeat");
       }
 
