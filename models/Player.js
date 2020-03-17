@@ -68,7 +68,6 @@ class Player {
     }
   }
 
-  // this might need to change depending on posting and getting locations in database for the future.
   moveCities(city, potentialDestination) {
     let newLocation = {};
     for (let i = 0; i < city.connectedCities.length; i++) {
@@ -76,11 +75,10 @@ class Player {
         newLocation = potentialDestination;
         i = 15;
         this.location = newLocation;
-        return true; //possibly needs to just return true for a check. Posting city achieves this result
+        return true;
       }
     }
     return false;
-    console.log("Sorry, you couldn't move there!");
   }
 
   async updatePlayerCity(player, destination, teamID) {
@@ -98,7 +96,6 @@ class Player {
       const response = await db.one(
         `UPDATE game SET actions = actions - 1 FROM teams WHERE game.id = ${teamID} RETURNING game.*;`
       );
-      // console.log("response to removeAction is:", response);
       switch (response.playerturn) {
         case 1:
           if (response.actions <= 0) {
@@ -159,7 +156,6 @@ class Player {
   }
 
   async getTeamID(sessionID) {
-    //this expects to recieve the Session id for the team to update the game database.
     try {
       const response = await db.one(
         `SELECT teams.id FROM teams WHERE teams.id = ${sessionID};`
