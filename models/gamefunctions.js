@@ -192,7 +192,7 @@ class Functions {
   async getWins(teamID) {
     try {
       const wins = await db.one(
-        `SELECT teams.win FROM teams WHERE teams.id = $1`,
+        `SELECT win FROM score WHERE id = $1`,
         [teamID]
       );
       return wins.win;
@@ -204,7 +204,7 @@ class Functions {
   async getlosses(teamID) {
     try {
       const loss = await db.one(
-        `SELECT teams.loss FROM teams WHERE teams.id = $1`,
+        `SELECT loss FROM score JOIN teams ON teams.id = score.id WHERE teams.id = $1;`,
         [teamID]
       );
       return loss.loss;
@@ -213,13 +213,11 @@ class Functions {
     }
   }
 
-  async updateWin(teamID) {
+  static async updateWin(teamID) {
     try {
-      let oldwins = await this.getWins(teamID);
-      oldwins += 1;
       const newWins = await db.one(
-        `UPDATE teams SET win = $1 WHERE teams.id = $2`,
-        [oldwins, teamID]
+        `UPDATE score SET win = win + 1 WHERE score.id = $1;`,
+        [teamID]
       );
       return newWins;
     } catch (e) {
@@ -227,13 +225,11 @@ class Functions {
     }
   }
 
-  async updatelosses(teamID) {
+  static async updatelosses(teamID) {
     try {
-      let oldlosses = await this.getlosses(teamID);
-      oldlosses += 1;
       const newlosses = await db.one(
-        `UPDATE teams SET loss = $1 WHERE teams.id = $2`,
-        [oldlosses, teamID]
+        `UPDATE score SET loss = loss + 1 WHERE score.id = $1`,
+        [teamID]
       );
       return newlosses;
     } catch (e) {
