@@ -86,7 +86,7 @@ class PlayerDeck {
         const j = Math.floor(Math.random() * (i + 1));
         [cards[i], cards[j]] = [cards[j], cards[i]];
       }
-    }
+    };
     random();
     return cards;
   }
@@ -116,10 +116,9 @@ class PlayerDeck {
 
   //post prototype.
   static async postPlayerDeck(deck, teamID) {
-    let posting = '1';
+    let posting = "1";
     const card = Object.keys(deck);
 
-    console.log(" The card array is: ", card);
     try {
       const response = await db.one(
         `UPDATE game SET playerdeck = ${card} WHERE game.id = 6;`

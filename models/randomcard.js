@@ -14,6 +14,5 @@ const cards = [
   nothin,
   nothin
 ];
-console.log(randomCard(cards));
 let card = randomCard(cards);
 module.exports = card;

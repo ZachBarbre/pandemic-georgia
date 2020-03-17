@@ -55,7 +55,6 @@ class City {
         `UPDATE game SET ${city}infect = $1 FROM teams WHERE game.id = ${teamID};`,
         [bit]
       );
-
       return post;
     } catch (e) {
       return e;

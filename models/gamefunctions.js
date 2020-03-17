@@ -150,22 +150,6 @@ class Functions {
     }
   }
 
-  // static async increaseCureCountdown(teamID) {
-  //   try {
-  //     const currentCurePercent = await this.getCureCountdown(teamID);
-  //     const cureProperty = currentCurePercent.cure_countdown;
-  //     const increasedNumber = Math.floor(Math.random() * 10);
-  //     const increaseCureCountdown = increasedNumber + cureProperty;
-  //     const increasedFunction = await this.postCureProperty(
-  //       teamID,
-  //       increaseCureCountdown
-  //     );
-  //     return increasedFunction;
-  //   } catch (e) {
-  //     return e;
-  //   }
-  // }
-
   static async increaseCureCountdown(teamID) {
     try {
       const response = await db.one(
