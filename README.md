@@ -12,4 +12,4 @@ Pandemic Georgia was built using Node.js, Express, Express-es6-template-engine, 
 
 ## Clone
 
-If you would like to clone and run the game you must run npm css-build after running npm install and prior to npm start. This builds the Bulma stylesheet.
+If you would like to clone and run the game you must run npm run css-build after running npm install and prior to npm start. This builds the Bulma stylesheet.
