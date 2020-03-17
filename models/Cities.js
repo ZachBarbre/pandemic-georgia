@@ -99,7 +99,7 @@ class City {
         playerArray[1],
         playerArray[2],
         playerArray[3],
-        1,
+        2,
         4,
         0,
         1,
