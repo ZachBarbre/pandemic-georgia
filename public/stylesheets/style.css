@@ -241,6 +241,9 @@ button {
   padding: 2vh 2vh;
 }
 
+.countdownNum {
+  font-size: 5vh;
+}
 
 .research {
   display: flex;
@@ -482,6 +485,13 @@ a {
   color: purple;
 }
 
+.endGame {
+  font-family: "capture_itregular";
+  font-size: 6vh;
+  text-align: center;
+  margin: 5vh auto;
+}
+
 @media only screen and (max-width: 1500px) {
 
   /* .turnInfo {
@@ -512,7 +522,11 @@ a {
   html {
     font-size: 2vw;
   }
-  
+
+  .countdownNum {
+    font-size: 3vh;
+  }
+
   .turnInfo {
     font-size: 3vh;
     text-align: center;

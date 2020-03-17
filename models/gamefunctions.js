@@ -25,10 +25,9 @@ class Functions {
     }
   }
 
-  async incrementOutbreak(oldNumber, teamsID) {
-    const newNumber = oldNumber + 1;
+  async setOutbreak(number, teamsID) {
     const value = await db.one(
-      `UPDATE game.outbreak SET outbreak = ${newNumber} FROM teams WHERE game.id = ${teamsID};`
+      `UPDATE game.outbreak SET outbreak = ${number} FROM teams WHERE game.id = ${teamsID};`
     );
   }
 
