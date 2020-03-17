@@ -307,7 +307,7 @@ router.post(
         res.status(200).redirect("/victory");
       }
 
-      if (game.death_countdown === 0) {
+      if (game.death_countdown <= 0) {
         const loss = await gameFunctions.updatelosses(userData.user_id);
         const deleteOldGame = await cityModel.deleteGame(userData.user_id);
         res.status(200).redirect("/defeat");
