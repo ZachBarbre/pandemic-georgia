@@ -284,9 +284,11 @@ router.post("/", async (req, res) => {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
   const playerArray = createPlayerArray(players);
-
+  const existingScore = await cityModel.scoreExists(userData.user_id);
   const newGame = await cityModel.initCity(userData.user_id, playerArray);
-
+  if (!existingScore.exists) {
+    const newScore = await cityModel.createScore(userData.user_id);
+  }
   res.status(200).redirect("/game/play");
 });
 
@@ -294,15 +296,19 @@ router.post("/", async (req, res) => {
 router.post(
   "/play/:city?",
   async (req, res, next) => {
-    const userData = req.session;
-    const game = await cityModel.getGame(userData.user_id);
-    if (game.cure_countdown >= 4) {
-      res.status(200).redirect("/victory");
-    }
+      const userData = req.session;
+      const game = await cityModel.getGame(userData.user_id);
+      if (game.cure_countdown >= 4) {
+        const win = await gameFunctions.updateWin(userData.user_id);
+        const deleteOldGame = await cityModel.deleteGame(userData.user_id);
+        res.status(200).redirect("/victory");
+      }
 
-    if (game.death_countdown === 0) {
-      res.status(200).redirect("/defeat");
-    }
+      if (game.death_countdown === 0) {
+        const loss = await gameFunctions.updatelosses(userData.user_id);
+        const deleteOldGame = await cityModel.deleteGame(userData.user_id);
+        res.status(200).redirect("/defeat");
+      }
 
     let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
     playerTurn = playerTurn.playerturn;
@@ -339,16 +345,22 @@ router.post(
           const researchChance = await gameFunctions.increaseCureCountdown(
             userData.user_id
           );
-          const recordResearch = await playerModel.recordResearch(
-            playerTurn,
-            userData.user_id
-          );
         }
         const recordCure = await playerModel.recordCure(
           playerTurn,
           clickedCity.name,
           userData.user_id
         );
+        const random = Math.floor(Math.random() * 10) + 1;
+        if (random === 8) {
+          const researchChance = await gameFunctions.increaseCureCountdown(
+            userData.user_id
+          );
+          const recordResearch = await playerModel.recordResearch(
+            playerTurn,
+            userData.user_id
+          );
+        }
       }
 
       if (game.actions === 1) {
