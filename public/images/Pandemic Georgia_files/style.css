@@ -1,14 +1,13 @@
-html {
-  font-size: 1vw;
-  color: white;
-  font-family: "capture_itregular";
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 @font-face {
   font-family: "capture_itregular";
   src: url("Capture_it-webfont.eot");
   src: url("Capture_it-webfont.eot?#iefix") format("embedded-opentype"),
-    url("Capture_it-webfont.woff2") format("woff2"),
     url("Capture_it-webfont.woff") format("woff"),
     url("Capture_it-webfont.ttf") format("truetype"),
     url("Capture_it-webfont.svg#capture_itregular") format("svg");
@@ -16,17 +15,66 @@ html {
   font-style: normal;
 }
 
-* {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+html {
+  font-size: 1vw;
+  color: white;
+  font-family: "capture_itregular";
 }
 
-button {
-  height: 3.7vh;
+body {
+  background: rgb(151, 215, 223);
+  background: radial-gradient(
+    circle,
+    rgba(151, 215, 223, 1) 0%,
+    rgba(33, 163, 217, 1) 68%,
+    rgba(35, 66, 144, 1) 100%
+  );
+  height: 100vh;
+  overflow: scroll;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-font {
+  font-family: "capture_itregular", sans-serif;
+}
+
+.researchText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.login {
+  max-width: 640px;
+}
+
+.cityButton {
+  height: 2.5vw;
   width: 2.5vw;
   background-color: yellow;
   border-radius: 50%;
+}
+
+.cityInfectedButton {
+  font-family: "capture_itregular";
+  color: white;
+  font-size: 2.5vh;
+  height: 2.5vw;
+  width: 2.5vw;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.neon {
+  color: #fff;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0ff,
+    0 0 80px #0ff, 0 0 90px #0ff, 0 0 100px #0ff, 0 0 150px #0ff;
 }
 
 .trackerContainerMobile {
@@ -46,6 +94,8 @@ button {
 }
 
 .wholeBoard {
+  font-family: "capture_itregular", sans-serif;
+  color: white;
   width: 80vw;
   height: 80vh;
   display: flex;
@@ -60,7 +110,7 @@ button {
   border: 2px solid black;
 }
 
-.infectInfo {
+.turnAndTimer {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -68,33 +118,67 @@ button {
   height: 33%;
 }
 
-.infectDraw {
+.turnInfo {
   text-align: center;
+  font-size: 4vh;
   height: 100%;
   width: 50%;
+  padding: 2vh 1vh;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
 }
 
 .epidemic {
-  border-left: 2px solid black;
+  border-left: 1px solid black;
   text-align: center;
   height: 100%;
   width: 50%;
+  border-bottom: 1px solid black;
+}
+
+.epidemicText {
+  font-size: 3vh;
+  padding: 1vh 1vh;
+  text-align: center;
 }
 
 .trackerContainer {
   display: flex;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
   flex-direction: column;
   align-items: center;
   color: black;
   justify-content: space-evenly;
+  width: 50%;
+  height: 100%;
+}
+
+.historyNav {
+  height: 4vh;
+  width: 100%;
+  text-align: center;
+}
+
+.trackerAndHistoryContainer {
+  text-align: center;
+  font-size: 2.5vh;
+  display: flex;
   width: 100%;
   height: 33%;
 }
 
+.history {
+  font-size: 2vh;
+  border-left: 1px solid black;
+  text-align: center;
+  border-top: 1px solid black;
+  width: 50%;
+  overflow-y: scroll;
+}
+
 .outbreak {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -113,8 +197,8 @@ button {
   align-items: center;
   justify-content: space-evenly;
   border: 2px solid black;
-  width: 2vw;
-  height: 2vw;
+  width: 3vw;
+  height: 3vw;
   color: black;
   background-color: lime;
   border-radius: 50%;
@@ -126,17 +210,53 @@ button {
   align-items: center;
   justify-content: space-evenly;
   border: 2px solid black;
-  width: 2vw;
-  height: 2vw;
+  width: 3vw;
+  height: 3vw;
   color: white;
   background-color: black;
   border-radius: 50%;
 }
 
-.playerHand {
-  text-align: center;
+.researchBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 2px solid black;
   width: 100%;
   height: 34%;
+}
+
+.cureBox {
+  font-size: 2.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 2vh 2vh;
+  width: 100%;
+  height: 100%;
+}
+
+.researchText {
+  font-size: 3vh;
+  padding: 2vh 2vh;
+}
+
+.countdownNum {
+  font-size: 5vh;
+}
+
+.research {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 2px solid black;
+  width: 3vw;
+  height: 3vw;
+  align-items: center;
+  color: black;
+  background-color: white;
+  border-radius: 50%;
 }
 
 .gameBoard {
@@ -146,7 +266,6 @@ button {
   max-width: 50%;
   min-width: 50%;
   height: 100%;
-
 }
 
 button:hover {
@@ -189,6 +308,52 @@ img {
   align-self: flex-end;
   padding-left: 4vw;
   padding-bottom: 12vh;
+}
+
+.playerBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.player1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: tomato;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
+}
+
+.player2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: black;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
+}
+
+.player3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: magenta;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
+}
+
+.player4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: purple;
+  width: 2vh;
+  height: 2vh;
+  border-radius: 50%;
 }
 
 .columbus {
@@ -302,15 +467,82 @@ a {
   height: 33%;
 }
 
-@media only screen and (max-width: 769px) {
+.disease1 {
+  color: red;
+}
 
+.disease2 {
+  color: white;
+}
+
+.disease3 {
+  color: lawngreen;
+}
+
+.disease4 {
+  color: purple;
+}
+
+.endGame {
+  font-family: "capture_itregular";
+  font-size: 6vh;
+  text-align: center;
+  margin: 5vh auto;
+}
+
+@media only screen and (max-width: 1500px) {
+  /* .turnInfo {
+    font-size: 2.8vh;
+  } */
+
+  .cureBox {
+    font-size: 2.2vh;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .turnInfo {
+    font-size: 2.8vh;
+  }
+
+  .cureBox {
+    font-size: 2.2vh;
+  }
+}
+
+@media only screen and (max-width: 750px) {
   html {
     font-size: 2vw;
   }
 
-  button {
-    height: 3vh;
-    width: 4vw;
+  .countdownNum {
+    font-size: 3vh;
+  }
+
+  .turnInfo {
+    font-size: 3vh;
+    text-align: center;
+    height: 100%;
+    width: 50%;
+    border-bottom: none;
+  }
+
+  .epidemic {
+    border-left: 2px solid black;
+    height: 100%;
+    width: 50%;
+    border-bottom: none;
+  }
+
+  .cityButton {
+    height: 5.6vw;
+    width: 5.6vw;
+  }
+
+  .cityInfectedButton {
+    font-size: 2.5vh;
+    height: 5.6vw;
+    width: 5.6vw;
   }
 
   .wholeBoard {
@@ -318,17 +550,22 @@ a {
     height: 95vh;
     display: flex;
     flex-direction: column;
-    margin: 6vh auto 9vh auto;
+    margin: 3vh auto 9vh auto;
     max-width: 1300px;
   }
 
-  .infectInfo {
-    height: 50%;
+  .turnAndTimer {
+    height: 33%;
   }
 
-  .playerHand {
+  .researchBox {
+    height: 33%;
     border-top: 2px solid black;
-    height: 50%;
+  }
+
+  .research {
+    width: 5vh;
+    height: 5vh;
   }
 
   .trackerContainer {
@@ -338,13 +575,25 @@ a {
   }
 
   .trackerContainerMobile {
+    font-family: "capture_itregular";
     display: flex;
+    font-size: 2vh;
     visibility: visible;
     flex-direction: row;
     height: 2vh;
     color: white;
-    margin: 0vh auto 6vh auto;
+    margin: 3vh auto 2vh auto;
     width: 100%;
+  }
+
+  .cureBox {
+    font-size: 2.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 2vh 2vh;
+    width: 100%;
+    height: 100%;
   }
 
   .gameBoard {
@@ -367,12 +616,11 @@ a {
     align-items: center;
     justify-content: space-evenly;
     border: 2px solid black;
-    width: 5vw;
-    height: 5vw;
+    width: 6vw;
+    height: 6vw;
     color: black;
     border-radius: 50%;
   }
-
 
   .infectionCounter {
     display: flex;
@@ -380,17 +628,29 @@ a {
     align-items: center;
     justify-content: space-evenly;
     border: 2px solid black;
-    width: 5vw;
-    height: 5vw;
+    width: 6vw;
+    height: 6vw;
     color: white;
     background-color: black;
     border-radius: 50%;
   }
 
+  .trackerAndHistoryContainer {
+    display: flex;
+    width: 100%;
+    height: 33%;
+  }
+
+  .history {
+    border-left: none;
+    text-align: center;
+    border-top: 2px solid black;
+    width: 100%;
+    overflow: scroll;
+  }
 
   .macon {
     align-self: flex-end;
     padding-left: 4vw;
   }
-
 }
