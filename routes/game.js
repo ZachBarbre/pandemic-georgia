@@ -194,8 +194,8 @@ const infect = async (cityToInfect, teamId) => {
     Valdosta
   ];
   const responseCites = await cityModel.getAllCityInfections(teamId);
-  const outbreakResponse = await gameFunctions.getOutbreak(teamId);
-  let outbreakCount = outbreakResponse.outbreak;
+  let outbreakCount = await gameFunctions.getOutbreak(teamId);
+  console.log(outbreakCount);
   cities.forEach((city, i) => {
     city.infectedCounter = Object.values(responseCites)[i];
   });
@@ -221,6 +221,7 @@ const infect = async (cityToInfect, teamId) => {
       break;
     }
   }
+
   const updateOutbreak = await gameFunctions.setOutbreak(outbreakCount, teamId);
   const updateCities = cities.map(city => city.infectedCounter);
   const postInfectedCities = await cityModel.postAllCityInfections(
@@ -296,19 +297,19 @@ router.post("/", async (req, res) => {
 router.post(
   "/play/:city?",
   async (req, res, next) => {
-      const userData = req.session;
-      const game = await cityModel.getGame(userData.user_id);
-      if (game.cure_countdown >= 4) {
-        const win = await gameFunctions.updateWin(userData.user_id);
-        const deleteOldGame = await cityModel.deleteGame(userData.user_id);
-        res.status(200).redirect("/victory");
-      }
+    const userData = req.session;
+    const game = await cityModel.getGame(userData.user_id);
+    if (game.cure_countdown >= 4) {
+      const win = await gameFunctions.updateWin(userData.user_id);
+      const deleteOldGame = await cityModel.deleteGame(userData.user_id);
+      res.status(200).redirect("/victory");
+    }
 
-      if (game.death_countdown === 0) {
-        const loss = await gameFunctions.updatelosses(userData.user_id);
-        const deleteOldGame = await cityModel.deleteGame(userData.user_id);
-        res.status(200).redirect("/defeat");
-      }
+    if (game.death_countdown === 0) {
+      const loss = await gameFunctions.updatelosses(userData.user_id);
+      const deleteOldGame = await cityModel.deleteGame(userData.user_id);
+      res.status(200).redirect("/defeat");
+    }
 
     let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
     playerTurn = playerTurn.playerturn;
@@ -340,27 +341,6 @@ router.post(
           clickedCity.name,
           userData.user_id
         );
-        const random = Math.floor(Math.random() * 10) + 1;
-        if (random === 2) {
-          const researchChance = await gameFunctions.increaseCureCountdown(
-            userData.user_id
-          );
-        }
-        const recordCure = await playerModel.recordCure(
-          playerTurn,
-          clickedCity.name,
-          userData.user_id
-        );
-        const random = Math.floor(Math.random() * 10) + 1;
-        if (random === 8) {
-          const researchChance = await gameFunctions.increaseCureCountdown(
-            userData.user_id
-          );
-          const recordResearch = await playerModel.recordResearch(
-            playerTurn,
-            userData.user_id
-          );
-        }
       }
 
       if (game.actions === 1) {
@@ -379,6 +359,12 @@ router.post(
         clickedCity.name,
         userData.user_id
       );
+      const random = Math.floor(Math.random() * 10) + 1;
+      if (random === 2) {
+        const researchChance = await gameFunctions.increaseCureCountdown(
+          userData.user_id
+        );
+      }
     }
     const action = await playerModel.removeAction(userData.user_id);
     console.log("actions", action);
@@ -390,7 +376,7 @@ router.post(
     next();
   },
   (req, res) => {
-    res.status(200).redirect("back");
+    res.status(200).redirect("/game/play");
   }
 );
 
