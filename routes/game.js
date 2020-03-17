@@ -279,7 +279,9 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const userData = req.session;
-  const { players } = req.body;
+  const {
+    players
+  } = req.body;
   if (userData.game_exists) {
     const deleteOldGame = await cityModel.deleteGame(userData.user_id);
   }
@@ -310,42 +312,49 @@ router.post(
         res.status(200).redirect("/defeat");
       }
 
-    let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
-    playerTurn = playerTurn.playerturn;
-    const city = req.params.city;
-    const clickedCity = setCurrentCity(city);
-    const playerCityRespose = await playerModel.getPlayerCity(
-      `player${playerTurn}`,
-      userData.user_id
-    );
-    const playerCityNumber = Object.values(playerCityRespose)[0];
-    const player = new playerModel(
-      `player${playerTurn}`,
-      playerCityNumber,
-      null
-    );
-    const playerCity = setPlayerCity(playerCityNumber);
+      let playerTurn = await playerModel.getCurrentPlayer(userData.user_id);
+      playerTurn = playerTurn.playerturn;
+      const city = req.params.city;
+      const clickedCity = setCurrentCity(city);
+      const playerCityRespose = await playerModel.getPlayerCity(
+        `player${playerTurn}`,
+        userData.user_id
+      );
+      const playerCityNumber = Object.values(playerCityRespose)[0];
+      const player = new playerModel(
+        `player${playerTurn}`,
+        playerCityNumber,
+        null
+      );
+      const playerCity = setPlayerCity(playerCityNumber);
 
-    if (playerCity !== clickedCity) {
-      const canMove = player.moveCities(playerCity, clickedCity);
-      if (canMove) {
-        const movePlayer = await player.updatePlayerCity(
-          player,
-          clickedCity,
-          userData.user_id
-        );
-        const recordMove = await playerModel.recordMove(
-          playerTurn,
-          playerCity.name,
-          clickedCity.name,
-          userData.user_id
-        );
-        const random = Math.floor(Math.random() * 10) + 1;
-        if (random === 2) {
-          const researchChance = await gameFunctions.increaseCureCountdown(
+      if (playerCity !== clickedCity) {
+        const canMove = player.moveCities(playerCity, clickedCity);
+        if (canMove) {
+          const movePlayer = await player.updatePlayerCity(
+            player,
+            clickedCity,
+            userData.user_id
+          );
+          const recordMove = await playerModel.recordMove(
+            playerTurn,
+            playerCity.name,
+            clickedCity.name,
             userData.user_id
           );
         }
+        if (game.actions === 1) {
+          const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
+        }
+      }
+
+      if (playerCity === clickedCity) {
+        const cure = await cureCity(
+          clickedCity,
+          city,
+          userData,
+          playerCityNumber
+        );
         const recordCure = await playerModel.recordCure(
           playerTurn,
           clickedCity.name,
@@ -363,35 +372,18 @@ router.post(
         }
       }
 
-      if (game.actions === 1) {
+      const action = await playerModel.removeAction(userData.user_id);
+      console.log("actions", action);
+      if (action.actions === 0) {
+        const infect = await infectCites(userData.user_id);
         const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
       }
-    }
-    if (playerCity === clickedCity) {
-      const cure = await cureCity(
-        clickedCity,
-        city,
-        userData,
-        playerCityNumber
-      );
-      const recordCure = await playerModel.recordCure(
-        playerTurn,
-        clickedCity.name,
-        userData.user_id
-      );
-    }
-    const action = await playerModel.removeAction(userData.user_id);
-    console.log("actions", action);
-    if (action.actions === 0) {
-      const infect = await infectCites(userData.user_id);
-      const decreaseDay = await gameFunctions.decreaseDay(userData.user_id);
-    }
 
-    next();
-  },
-  (req, res) => {
-    res.status(200).redirect("back");
-  }
+      next();
+    },
+    (req, res) => {
+      res.status(200).redirect("back");
+    }
 );
 
 module.exports = router;
