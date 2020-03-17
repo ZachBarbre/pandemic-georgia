@@ -194,6 +194,8 @@ const infect = async (cityToInfect, teamId) => {
     Valdosta
   ];
   const responseCites = await cityModel.getAllCityInfections(teamId);
+  const outbreakResponse = await gameFunctions.getOutbreak(teamId);
+  let outbreakCount = outbreakResponse.outbreak;
   cities.forEach((city, i) => {
     city.infectedCounter = Object.values(responseCites)[i];
   });
@@ -207,6 +209,7 @@ const infect = async (cityToInfect, teamId) => {
           alreadyInfected.push(city);
           newCities = city.connectedCities.map(connected => eval(connected));
           citiesToInfect = citiesToInfect.concat(newCities);
+          outbreakCount++;
         } else if (!alreadyInfected.includes(city)) {
           city.infectedCounter++;
           alreadyInfected.push(city);
@@ -218,8 +221,12 @@ const infect = async (cityToInfect, teamId) => {
       break;
     }
   }
+  const updateOutbreak = await gameFunctions.setOutbreak(outbreakCount, teamId);
   const updateCities = cities.map(city => city.infectedCounter);
-  const post = await cityModel.postAllCityInfections(teamId, updateCities);
+  const postInfectedCities = await cityModel.postAllCityInfections(
+    teamId,
+    updateCities
+  );
 };
 
 const infectRandomCity = () => {

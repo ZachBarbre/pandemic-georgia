@@ -16,17 +16,18 @@ class Functions {
 
   static async decreaseDay(teamID) {
     try {
-      const response = await db.one(`UPDATE game SET death_countdown = death_countdown - 1 WHERE game.id = ${teamID};`);
+      const response = await db.one(
+        `UPDATE game SET death_countdown = death_countdown - 1 WHERE game.id = ${teamID};`
+      );
       return response;
     } catch (e) {
       return e;
     }
   }
 
-  async incrementOutbreak(oldNumber, teamsID) {
-    const newNumber = oldNumber + 1;
+  async setOutbreak(number, teamsID) {
     const value = await db.one(
-      `UPDATE game.outbreak SET outbreak = ${newNumber} FROM teams WHERE game.id = ${teamsID};`
+      `UPDATE game.outbreak SET outbreak = ${number} FROM teams WHERE game.id = ${teamsID};`
     );
   }
 
@@ -98,7 +99,8 @@ class Functions {
       if (cureArray[i] === false) {
         i = 5;
         return false;
-      } else {}
+      } else {
+      }
     }
     return true;
   }
@@ -166,7 +168,9 @@ class Functions {
 
   static async increaseCureCountdown(teamID) {
     try {
-      const response = await db.one(`UPDATE game SET cure_countdown = cure_countdown + 1 WHERE id = ${teamID};`)
+      const response = await db.one(
+        `UPDATE game SET cure_countdown = cure_countdown + 1 WHERE id = ${teamID};`
+      );
       return response;
     } catch (e) {
       return e;
